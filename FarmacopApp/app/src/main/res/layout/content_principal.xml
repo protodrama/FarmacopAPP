@@ -9,15 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="pw.jfrodriguez.farmacopapp.About"
-    tools:showIn="@layout/activity_about">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/TextViewFarmacopGreen"
-        android:text="@string/aboutText"/>
-</ScrollView>
+    tools:context="pw.jfrodriguez.farmacopapp.Principal"
+    tools:showIn="@layout/activity_principal">
+
 </RelativeLayout>
