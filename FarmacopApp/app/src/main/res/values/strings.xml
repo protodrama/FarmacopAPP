@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">FarmacopApp</string>
+    <string name="login_title">Entrar</string>
+    <string name="action_about">Acerca de...</string>
+    <string name="action_contact">Contáctanos</string>
+    <string name="title_activity_about">Acerca de...</string>
+
+
+
+    <string name="aboutText">
+        Esta aplicación es parte de un conjunto formado por dos aplicaciones que trabajan
+        de forma conjunta (Una aplicación de escritorio y esta aplicación para móvil).\n\nEl desarrollo de la aplicación fue realizado
+        como parte del proyecto integrado de obligatoria aportación exigido por
+        el instituto IES Portada Alta para la obtención del título de FP de grado Superior \"Desarrollo de aplicaciones multiplataforma\".\n\nDesarrollado por Juan Francisco Rodríguez Fernández.</string>
+</resources>
