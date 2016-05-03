@@ -18,5 +18,5 @@
         como parte del proyecto integrado de obligatoria aportación exigido por
         el instituto IES Portada Alta para la obtención del título de FP de grado Superior \"Desarrollo de aplicaciones multiplataforma\".\n\nDesarrollado por Juan Francisco Rodríguez Fernández.</string>
     <string name="title_activity_principal">Página principal</string>
-    <string name="title_activity_active_account">ActiveAccount</string>
+    <string name="title_activity_active_account">Activar cuenta</string>
 </resources>

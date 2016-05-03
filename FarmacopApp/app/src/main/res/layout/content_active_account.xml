@@ -11,8 +11,71 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="pw.jfrodriguez.farmacopapp.ActiveAccount"
     android:orientation="vertical"
+    android:background="@color/colorWhite"
     tools:showIn="@layout/activity_active_account">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextViewFarmacopGreen"
+                android:text="Nombre de cuenta:" />
 
+            <EditText
+                android:layout_width="match_parent"
+                android:inputType="textPersonName"
+                android:id="@+id/txtNameAct"
+                style="@style/EditTextStyle"
+                android:hint="cuenta"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextViewFarmacopGreen"
+                android:text="Contraseña:" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:inputType="textPassword"
+                android:id="@+id/txtPassAct"
+                style="@style/EditTextStyle"
+                android:hint="contraseña"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextViewFarmacopGreen"
+                android:text="Repetir contraseña:" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:inputType="textPassword"
+                android:id="@+id/txtPassAct2"
+                style="@style/EditTextStyle"
+                android:hint="repetir contraseña"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Validar"
+                style="@style/BtnFarmacopGreen"
+                android:id="@+id/btnValidar"
+                android:layout_gravity="center_horizontal"
+                android:onClick="onClick"/>
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -13,6 +13,8 @@ public class GenConf {
 
     public static final String DEFAPIKEY = "eadmghacdg";
     public static final String LogURL = "https://jfrodriguez.pw/slimrest/api/Login";
+    public static final String ValidationURL = "https://jfrodriguez.pw/slimrest/api/Validation";
+    public static final String ValidateURL = "https://jfrodriguez.pw/slimrest/api/Validate";
 
     public static String MD5(String cadena) throws NoSuchAlgorithmException {
 
