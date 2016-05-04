@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -34,6 +35,7 @@ import org.json.JSONObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.json.JSONObject;
 
@@ -192,8 +194,115 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         GenConf.MostrarToast(loginactivity.this,"El usuario o la contraseña no son correctos");
     }
 
-    public void CheckAccountToRestPassAndSend(){
+    public void CheckAccountToRestPassAndSend(String name)
+    {
+        try {
+            final String NombreUsuario = name;
 
+            AsyncHttpClient cliente = new AsyncHttpClient();
+            cliente.setMaxRetriesAndTimeout(0, 10000);
+
+            RequestParams parametros = new RequestParams();
+            parametros.put("cuenta", NombreUsuario);
+            parametros.put("apikey", "eadmghacdg");
+
+            dialogo.setMessage("Comprobando cuenta de usuario");
+
+            cliente.get(this,GenConf.CheckUserAcURL,parametros,new JsonHttpResponseHandler(){
+                @Override
+                public void onStart() {
+                    dialogo.show();
+                    super.onStart();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                    try {
+                        dialogo.cancel();
+                        CheckData(response.getJSONArray("data"),NombreUsuario);
+                    } catch (JSONException e) {
+                        GenConf.MostrarToast(loginactivity.this,"Error al comprobar la cuenta");
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                    dialogo.cancel();
+                    GenConf.MostrarToast(loginactivity.this, "Error al comprobar la cuentas");
+                }
+            });
+
+
+        }
+        catch (Exception e){
+            GenConf.MostrarToast(this,"Error al comprobar el usuario");
+        }
+
+    }
+
+    public void CheckData(JSONArray data,String name) throws JSONException {
+        Integer count = data.getJSONObject(0).getInt("count");
+        if(count > 0)
+            RestPassAndSend(name);
+        else
+            GenConf.MostrarToast(loginactivity.this, "La cuenta indicada no es correcta");
+    }
+
+    public void RestPassAndSend(String name){
+        try {
+            final String NombreUsuario = name;
+
+            AsyncHttpClient cliente = new AsyncHttpClient();
+            cliente.setMaxRetriesAndTimeout(0, 10000);
+            Random rnd = new Random();
+            Integer Low = 100000;
+            Integer High = 999999;
+            Integer Result = rnd.nextInt(High-Low) + Low;
+            String temp = "" + Result;
+            String codigo = GenConf.MD5(temp);
+
+            RequestParams parametros = new RequestParams();
+            parametros.put("cuenta", NombreUsuario);
+            parametros.put("apikey", "eadmghacdg");
+            parametros.put("codigo",Result);
+            parametros.put("npass",codigo);
+
+            dialogo.setMessage("Procesando...");
+
+            cliente.get(this,GenConf.RestPassURL,parametros,new JsonHttpResponseHandler(){
+                @Override
+                public void onStart() {
+                    dialogo.show();
+                    super.onStart();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                    try {
+                        dialogo.cancel();
+                        if(response.getBoolean("code"))
+                           MostrarAcceptDialog("Se ha enviado un correo a su cuenta de correo con la contraseña nueva. Puede tardar unos minutos.");
+                    } catch (JSONException e) {
+                        MostrarAcceptDialog("Error al generar la contraseña");
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                    dialogo.cancel();
+                    MostrarAcceptDialog("Error al generar la contraseña");
+                }
+            });
+
+
+        }
+        catch (Exception e){
+            MostrarAcceptDialog("Error al generar la contraseña");
+        }
     }
 
     public void MostrarAlertDialog(){
@@ -208,6 +317,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //COMPROBAR Y MANDAR CORREO CON LA NUEVA CONTRASEÑA
+                        CheckAccountToRestPassAndSend(editText.getText().toString());
                     }
                 })
                 .setNegativeButton("Cancelar",
@@ -216,6 +326,26 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                                 dialog.cancel();
                             }
                         });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    public void MostrarAcceptDialog(String message){
+        LayoutInflater layoutInflater = LayoutInflater.from(loginactivity.this);
+        View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(loginactivity.this);
+        alertDialogBuilder.setView(promptView);
+
+        final TextView editText = (TextView) promptView.findViewById(R.id.textViewtext);
+        editText.setText(message);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
 
         // create an alert dialog
         AlertDialog alert = alertDialogBuilder.create();

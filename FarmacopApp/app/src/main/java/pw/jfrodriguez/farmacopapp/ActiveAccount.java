@@ -104,7 +104,7 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                         dialogo.cancel();
                         CheckData(response.getJSONArray("data"));
                     } catch (JSONException e) {
-                        GenConf.MostrarToast(ActiveAccount.this,"Error al comprobar la cuenta");
+                        MostrarAcceptDialog("Error al comprobar la cuenta");
                     }
                 }
 
@@ -112,14 +112,14 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     dialogo.cancel();
-                    GenConf.MostrarToast(ActiveAccount.this, "Error al comprobar la cuentas");
+                    MostrarAcceptDialog("Error al comprobar la cuenta");
                 }
             });
 
 
         }
         catch (Exception e){
-            GenConf.MostrarToast(this,"Error al comprobar el usuario: " + e.getMessage());
+            MostrarAcceptDialog("Error al comprobar el usuario");
         }
     }
 
@@ -128,7 +128,7 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
         if(count > 0)
             ActiveAccount();
         else
-            GenConf.MostrarToast(ActiveAccount.this, "La cuenta indicada no es correcta");
+            MostrarAcceptDialog("La cuenta indicada no es correcta");
     }
 
     public void ActiveAccount(){
@@ -163,7 +163,7 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                         else
                             throw new JSONException("");
                     } catch (JSONException e) {
-                        GenConf.MostrarToast(ActiveAccount.this, "Error al activar cuenta");
+                        MostrarAcceptDialog("Error al activar cuenta");
                     }
                 }
 
@@ -171,14 +171,14 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     dialogo.cancel();
-                    GenConf.MostrarToast(ActiveAccount.this, "Error al activar cuenta");
+                    MostrarAcceptDialog("Error al activar cuenta");
                 }
             });
 
 
         }
         catch (Exception e){
-            GenConf.MostrarToast(this,"Error al comprobar el usuario: " + e.getMessage());
+            MostrarAcceptDialog("Error al al activar cuenta");
         }
     }
 
@@ -196,6 +196,26 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         CloseActivity();
+                    }
+                });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    public void MostrarAcceptDialog(String message){
+        LayoutInflater layoutInflater = LayoutInflater.from(ActiveAccount.this);
+        View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ActiveAccount.this);
+        alertDialogBuilder.setView(promptView);
+
+        final TextView editText = (TextView) promptView.findViewById(R.id.textViewtext);
+        editText.setText(message);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
                     }
                 });
 

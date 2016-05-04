@@ -15,6 +15,8 @@ public class GenConf {
     public static final String LogURL = "https://jfrodriguez.pw/slimrest/api/Login";
     public static final String ValidationURL = "https://jfrodriguez.pw/slimrest/api/Validation";
     public static final String ValidateURL = "https://jfrodriguez.pw/slimrest/api/Validate";
+    public static final String CheckUserAcURL = "https://jfrodriguez.pw/slimrest/api/checkUser";
+    public static final String RestPassURL = "https://jfrodriguez.pw/slimrest/api/restpass";
 
     public static String MD5(String cadena) throws NoSuchAlgorithmException {
 
@@ -34,7 +36,7 @@ public class GenConf {
     }
 
     public static void MostrarToast(Context contexto, String mensaje){
-        Toast.makeText(contexto, mensaje, Toast.LENGTH_SHORT).show();
+        Toast.makeText(contexto, mensaje, Toast.LENGTH_LONG).show();
     }
 
 }
