@@ -1,6 +1,7 @@
 package pw.jfrodriguez.farmacopapp;
 
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -14,7 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class Principal extends AppCompatActivity implements listDialogFragment.NoticeDialogListener {
+public class Principal extends AppCompatActivity implements listDialogFragment.NoticeDialogListener,View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,13 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
                 intent.setData(Uri.parse("tel:" + telf));
                 startActivity(intent);
                 break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.exit){
+            Logout();
         }
     }
 }

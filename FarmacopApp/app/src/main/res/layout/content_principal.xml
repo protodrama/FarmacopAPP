@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,6 +10,164 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="pw.jfrodriguez.farmacopapp.Principal"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
     tools:showIn="@layout/activity_principal">
 
-</RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/showRecepies"
+        android:background="@drawable/linearlayoutstyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:onClick="onClick">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/receta"
+            />
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            style="@style/TextViewFarmacopGreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mis recetas"
+            android:textSize="28dp"
+            android:id="@+id/txtshowRec" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/showmedictake"
+        android:background="@drawable/linearlayoutstyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:onClick="onClick">
+
+        <TextView
+            android:layout_marginRight="10dp"
+            style="@style/TextViewFarmacopGreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Horario de T.to"
+            android:textSize="28dp"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/txtmytakes" />
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/tomas"
+            android:layout_gravity="right"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/showprofile"
+        android:background="@drawable/linearlayoutstyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:onClick="onClick">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/perfil"
+            />
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            style="@style/TextViewFarmacopGreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Perfil"
+            android:textSize="28dp"
+            android:id="@+id/txtshowmessages" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/showmessages"
+        android:background="@drawable/linearlayoutstyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:onClick="onClick">
+
+        <TextView
+            android:layout_marginRight="10dp"
+            style="@style/TextViewFarmacopGreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mensajes"
+            android:textSize="28dp"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/txtprofile" />
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/mensaje"
+            android:layout_gravity="right"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/exit"
+        android:background="@drawable/linearlayoutstyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:onClick="onClick">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/salir"
+            />
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            style="@style/TextViewFarmacopGreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salir"
+            android:textSize="28dp"
+            android:id="@+id/txtexit" />
+
+
+    </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

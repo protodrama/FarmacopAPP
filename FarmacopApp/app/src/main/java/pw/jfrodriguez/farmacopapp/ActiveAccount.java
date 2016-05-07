@@ -104,7 +104,7 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                         dialogo.cancel();
                         CheckData(response.getJSONArray("data"),NombreUsuario);
                     } catch (JSONException e) {
-                        MostrarAcceptDialog("Error al comprobar la cuenta");
+                        MostrarAcceptDialog("El nombre de cuenta no coincide con ninguna cuenta que no esté validada.");
                     }
                 }
 
@@ -112,7 +112,7 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     dialogo.cancel();
-                    MostrarAcceptDialog("Error al comprobar la cuenta");
+                    MostrarAcceptDialog("Error al comprobar la cuenta. Compruebe su conexión.");
                 }
             });
 
@@ -163,7 +163,7 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                         else
                             throw new JSONException("");
                     } catch (JSONException e) {
-                        MostrarAcceptDialog("Error al activar cuenta");
+                        MostrarAcceptDialog("Error al al activar cuenta.");
                     }
                 }
 
@@ -171,14 +171,14 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     dialogo.cancel();
-                    MostrarAcceptDialog("Error al activar cuenta");
+                    MostrarAcceptDialog("Error al activar cuenta. Compruebe su conexión.");
                 }
             });
 
 
         }
         catch (Exception e){
-            MostrarAcceptDialog("Error al al activar cuenta");
+            MostrarAcceptDialog("Error al al activar cuenta.");
         }
     }
 
