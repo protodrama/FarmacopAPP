@@ -69,12 +69,12 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                 return true;
             }
             else{
-                GenConf.MostrarToast(this,"Las contraseñas deben coincidir");
+                MostrarAcceptDialog("Las contraseñas deben coincidir");
                 return false;
             }
         }
         else{
-            GenConf.MostrarToast(this,"Se deben rellenar todos los datos");
+            MostrarAcceptDialog("Se deben rellenar todos los datos");
             return false;
         }
     }
@@ -102,7 +102,7 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                     super.onSuccess(statusCode, headers, response);
                     try {
                         dialogo.cancel();
-                        CheckData(response.getJSONArray("data"));
+                        CheckData(response.getJSONArray("data"),NombreUsuario);
                     } catch (JSONException e) {
                         MostrarAcceptDialog("Error al comprobar la cuenta");
                     }
@@ -123,9 +123,9 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void CheckData(JSONArray data) throws JSONException {
-        Integer count = data.getJSONObject(0).getInt("count");
-        if(count > 0)
+    public void CheckData(JSONArray data,String name) throws JSONException {
+        String username = data.getJSONObject(0).getString("Cuenta");
+        if(username.equals(name))
             ActiveAccount();
         else
             MostrarAcceptDialog("La cuenta indicada no es correcta");

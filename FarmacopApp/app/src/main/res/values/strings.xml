@@ -6,6 +6,8 @@
     <string name="title_activity_about">Acerca de...</string>
     <string name="correo">farmacop_oficial@hotmail.com</string>
     <string name="telefono">628767820</string>
+    <string name="profile">Perfil</string>
+    <string name="logout">Salir</string>
     <string-array name="contact_array">
         <item>@string/correo</item>
         <item>@string/telefono</item>

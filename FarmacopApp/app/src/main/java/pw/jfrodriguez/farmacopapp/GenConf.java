@@ -1,6 +1,7 @@
 package pw.jfrodriguez.farmacopapp;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import java.security.MessageDigest;
@@ -17,6 +18,13 @@ public class GenConf {
     public static final String ValidateURL = "https://jfrodriguez.pw/slimrest/api/Validate";
     public static final String CheckUserAcURL = "https://jfrodriguez.pw/slimrest/api/checkUser";
     public static final String RestPassURL = "https://jfrodriguez.pw/slimrest/api/restpass";
+    public static final String UserDataURL = "https://jfrodriguez.pw/slimrest/api/Userdata";
+
+    public static final String SAVEDSESION = "sesion_data";
+
+    public static final String ACCOUNT = "cuenta";
+    public static final String APIKEY = "apikey";
+
 
     public static String MD5(String cadena) throws NoSuchAlgorithmException {
 

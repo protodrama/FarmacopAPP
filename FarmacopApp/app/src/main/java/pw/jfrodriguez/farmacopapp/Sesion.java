@@ -20,6 +20,5 @@ public class Sesion {
     static String FNac;
     static String Pass;
     static String Apikey;
-    static ArrayList<String> Alergias;
 
 }
