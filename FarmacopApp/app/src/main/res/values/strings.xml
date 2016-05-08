@@ -21,4 +21,10 @@
         el instituto IES Portada Alta para la obtención del título de FP de grado Superior \"Desarrollo de aplicaciones multiplataforma\".\n\nDesarrollado por Juan Francisco Rodríguez Fernández.</string>
     <string name="title_activity_principal">Página principal</string>
     <string name="title_activity_active_account">Activar cuenta</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_horariotomas">horariotomas</string>
+    <string name="title_activity_recetas">recetas</string>
+    <string name="title_activity_mensajes">mensajes</string>
+    <string name="title_activity_nuevomessage">nuevomessage</string>
+    <string name="title_activity_nuevomensaje">nuevomensaje</string>
 </resources>

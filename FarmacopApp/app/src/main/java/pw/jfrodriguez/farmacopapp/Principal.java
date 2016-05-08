@@ -36,10 +36,16 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        //.setAction("Action", null).show();
+                OpenNewMessageActivity();
             }
         });
+    }
+
+    public void OpenNewMessageActivity(){
+        Intent r = new Intent(this,nuevomensaje.class);
+        startActivity(r);
     }
 
     public void CloseActivity(){
@@ -59,7 +65,8 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
         Intent i = null;
 
         if(id == R.id.user_profile){
-
+            i = new Intent(this,Profile.class);
+            startActivity(i);
         }
         if (id == R.id.action_about) {
             i = new Intent(this,About.class);
@@ -110,8 +117,28 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.exit){
-            Logout();
+        switch (v.getId()) {
+            case R.id.exit:
+                Logout();
+                break;
+            case R.id.showRecepies:
+                Intent r = new Intent(this,recetas.class);
+                startActivity(r);
+                break;
+            case R.id.showcontrol:
+                Intent a = new Intent(this,horariotomas.class);
+                startActivity(a);
+                break;
+            case R.id.showmessages:
+                Intent m = new Intent(this,mensajes.class);
+                startActivity(m);
+                break;
+            case R.id.showprofile:
+                Intent i = new Intent(this,Profile.class);
+                startActivity(i);
+                break;
+            default:
+                break;
         }
     }
 }
