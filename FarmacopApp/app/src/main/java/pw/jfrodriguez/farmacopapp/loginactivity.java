@@ -86,7 +86,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
     public void SaveUserAccount(String User, String Apikey){
         SharedPreferences Preferences = getApplicationContext().getSharedPreferences(GenConf.SAVEDSESION,0);
         SharedPreferences.Editor mEditor = Preferences.edit();
-        mEditor.putString(GenConf.ACCOUNT,User);
+        mEditor.putString(GenConf.ACCOUNT, User);
         mEditor.putString(GenConf.APIKEY,Apikey);
         mEditor.apply();
     }
@@ -138,7 +138,8 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onStop() {
-        GenConf.MessageFromRecPassDialog = messageBoxText.getText().toString();
+        if(GenConf.ShowingRecPassDialog)
+            GenConf.MessageFromRecPassDialog = messageBoxText.getText().toString();
         super.onStop();
     }
 
