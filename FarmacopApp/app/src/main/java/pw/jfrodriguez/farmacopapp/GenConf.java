@@ -19,12 +19,19 @@ public class GenConf {
     public static final String CheckUserAcURL = "https://jfrodriguez.pw/slimrest/api/checkUser";
     public static final String RestPassURL = "https://jfrodriguez.pw/slimrest/api/restpass";
     public static final String UserDataURL = "https://jfrodriguez.pw/slimrest/api/Userdata";
+    public static final String ServiceNotReadedMessagesURL = "https://jfrodriguez.pw/slimrest/api/NotReadedMessages";
 
     public static final String SAVEDSESION = "sesion_data";
 
     public static final String ACCOUNT = "cuenta";
     public static final String APIKEY = "apikey";
 
+    public static final String SeeMessages = "SeeMensages";
+
+    public static Boolean OpenedToSeeMessages = false;
+    public static Boolean ShowingRecPassDialog = false;
+
+    public static String MessageFromRecPassDialog = "";
 
     public static String MD5(String cadena) throws NoSuchAlgorithmException {
 

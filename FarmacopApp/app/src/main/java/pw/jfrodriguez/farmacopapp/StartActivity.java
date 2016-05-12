@@ -1,9 +1,12 @@
 package pw.jfrodriguez.farmacopapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -21,6 +24,12 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        Bundle extras = getIntent().getExtras();
+        try{
+            extras.getString(GenConf.SeeMessages);
+            GenConf.OpenedToSeeMessages = true;
+        }
+        catch (Exception e){}
         RetrieveSesionData();
     }
 
@@ -28,10 +37,12 @@ public class StartActivity extends AppCompatActivity {
         SharedPreferences Preferences = getApplicationContext().getSharedPreferences(GenConf.SAVEDSESION,0);
         String account = Preferences.getString(GenConf.ACCOUNT, null);
         String apikey = Preferences.getString(GenConf.APIKEY,null);
+
         if(account != null && apikey != null){
             GetUserData(account,apikey);
         }
         else {
+            GenConf.OpenedToSeeMessages = false;
             StartLoginActivity();
         }
     }
@@ -99,4 +110,5 @@ public class StartActivity extends AppCompatActivity {
         startActivity(princ);
         this.finish();
     }
+
 }

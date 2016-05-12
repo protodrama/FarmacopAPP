@@ -46,6 +46,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
 
     ProgressDialog dialogo;
     EditText txtName,txtPass;
+    EditText messageBoxText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,13 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         txtPass = (EditText)findViewById(R.id.txtPass);
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(GenConf.ShowingRecPassDialog){
+            MostrarAlertDialog();
+        }
+    }
 
     public void SaveUserAccount(String User, String Apikey){
         SharedPreferences Preferences = getApplicationContext().getSharedPreferences(GenConf.SAVEDSESION,0);
@@ -127,6 +134,17 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onStop() {
+        GenConf.MessageFromRecPassDialog = messageBoxText.getText().toString();
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
     }
 
     @Override
@@ -208,8 +226,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         MostrarAcceptDialog("El usuario o la contraseña no son correctos");
     }
 
-    public void CheckAccountToRestPassAndSend(String name)
-    {
+    public void CheckAccountToRestPassAndSend(String name) {
         try {
             final String NombreUsuario = name;
 
@@ -279,7 +296,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
 
             RequestParams parametros = new RequestParams();
             parametros.put("cuenta", NombreUsuario);
-            parametros.put("apikey", "eadmghacdg");
+            parametros.put("apikey", GenConf.DEFAPIKEY);
             parametros.put("codigo",Result);
             parametros.put("npass",codigo);
 
@@ -382,23 +399,29 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void MostrarAlertDialog(){
+        GenConf.ShowingRecPassDialog = true;
         LayoutInflater layoutInflater = LayoutInflater.from(loginactivity.this);
         View promptView = layoutInflater.inflate(R.layout.restpass_layout, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(loginactivity.this);
         alertDialogBuilder.setView(promptView);
 
-        final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+        messageBoxText = (EditText) promptView.findViewById(R.id.edittext);
+        messageBoxText.setText(GenConf.MessageFromRecPassDialog);
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //COMPROBAR Y MANDAR CORREO CON LA NUEVA CONTRASEÑA
-                        CheckAccountToRestPassAndSend(editText.getText().toString());
+                        GenConf.ShowingRecPassDialog = false;
+                        GenConf.MessageFromRecPassDialog = "";
+                        CheckAccountToRestPassAndSend(messageBoxText.getText().toString());
                     }
                 })
                 .setNegativeButton("Cancelar",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                GenConf.ShowingRecPassDialog = false;
+                                GenConf.MessageFromRecPassDialog = "";
                                 dialog.cancel();
                             }
                         });
@@ -414,8 +437,8 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(loginactivity.this);
         alertDialogBuilder.setView(promptView);
 
-        final TextView editText = (TextView) promptView.findViewById(R.id.textViewtext);
-        editText.setText(message);
+        TextView textView = (TextView) promptView.findViewById(R.id.textViewtext);
+        textView.setText(message);
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {

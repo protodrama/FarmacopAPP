@@ -41,6 +41,15 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
                 OpenNewMessageActivity();
             }
         });
+
+        if(!backgroundService.Started){
+            mybroadcast.StartServiceFromActivity(this);
+        }
+        if(GenConf.OpenedToSeeMessages)
+        {
+            Intent messages = new Intent(this,mensajes.class);
+            startActivity(messages);
+        }
     }
 
     public void OpenNewMessageActivity(){
