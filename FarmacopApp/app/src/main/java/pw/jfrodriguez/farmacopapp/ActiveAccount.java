@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -88,7 +89,7 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
 
             RequestParams parametros = new RequestParams();
             parametros.put("cuenta", NombreUsuario);
-            parametros.put("apikey", "eadmghacdg");
+            parametros.put("apikey", GenConf.DEFAPIKEY);
 
             cliente.get(this,GenConf.ValidationURL,parametros,new JsonHttpResponseHandler(){
                 @Override
@@ -105,6 +106,7 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                         CheckData(response.getJSONArray("data"),NombreUsuario);
                     } catch (JSONException e) {
                         MostrarAcceptDialog("El nombre de cuenta no coincide con ninguna cuenta que no esté validada.");
+                        Log.i("milog", e.getMessage());
                     }
                 }
 

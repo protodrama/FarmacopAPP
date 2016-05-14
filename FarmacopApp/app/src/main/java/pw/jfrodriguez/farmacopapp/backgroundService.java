@@ -41,6 +41,7 @@ public class backgroundService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Started = true;
+        ShowAlarmActivity();
         Log.i("milog","servicio activo");
         new Thread(){
             @Override
@@ -173,11 +174,22 @@ public class backgroundService extends Service {
                 Notification TheNotification = builder.build();
                 TheNotification.defaults |= Notification.DEFAULT_VIBRATE;
                 TheNotification.defaults |= Notification.DEFAULT_SOUND;
-                nManager.notify(NOTIFICATION_ID, TheNotification);
+            nManager.notify(NOTIFICATION_ID, TheNotification);
 
         }
         catch (Exception ex){
             Log.i("milog",ex.getMessage());
+        }
+    }
+
+    public void ShowAlarmActivity(){
+        try {
+            Intent alarmAct = new Intent(this, Alarm.class);
+            alarmAct.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(alarmAct);
+        }
+        catch (Exception e){
+            Log.i("milog",e.getMessage());
         }
     }
 }
