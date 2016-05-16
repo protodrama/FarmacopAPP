@@ -27,5 +27,5 @@
     <string name="title_activity_mensajes">mensajes</string>
     <string name="title_activity_nuevomessage">nuevomessage</string>
     <string name="title_activity_nuevomensaje">nuevomensaje</string>
-    <string name="title_activity_alarm">Alarm</string>
+    <string name="title_activity_alarm">HORA DE TOMA</string>
 </resources>

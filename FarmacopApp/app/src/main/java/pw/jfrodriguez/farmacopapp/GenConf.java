@@ -20,6 +20,7 @@ public class GenConf {
     public static final String RestPassURL = "https://jfrodriguez.pw/slimrest/api/restpass";
     public static final String UserDataURL = "https://jfrodriguez.pw/slimrest/api/Userdata";
     public static final String ServiceNotReadedMessagesURL = "https://jfrodriguez.pw/slimrest/api/NotReadedMessages";
+    public static final String GetControlsURL = "https://jfrodriguez.pw/slimrest/api/GetControl";
 
     public static final String SAVEDSESION = "sesion_data";
 

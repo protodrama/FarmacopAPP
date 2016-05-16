@@ -86,7 +86,8 @@
             android:name=".Alarm"
             android:label="@string/title_activity_alarm"
             android:showOnLockScreen="true"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

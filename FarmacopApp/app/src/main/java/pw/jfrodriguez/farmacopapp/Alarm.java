@@ -9,6 +9,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 public class Alarm extends AppCompatActivity {
 
@@ -19,14 +23,11 @@ public class Alarm extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        ListView mListView = (ListView)findViewById(R.id.mListView);
+        ArrayList<String> Data = getIntent().getExtras().getStringArrayList("Data");
+        if(Data != null)
+            mListView.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Data));
+
     }
 
     @Override
