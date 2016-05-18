@@ -116,6 +116,12 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                     dialogo.cancel();
                     MostrarAcceptDialog("Error al comprobar la cuenta. Compruebe su conexión.");
                 }
+
+                @Override
+                public void onFinish() {
+                    dialogo.cancel();
+                    super.onFinish();
+                }
             });
 
 
@@ -174,6 +180,12 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     dialogo.cancel();
                     MostrarAcceptDialog("Error al activar cuenta. Compruebe su conexión.");
+                }
+
+                @Override
+                public void onFinish() {
+                    dialogo.cancel();
+                    super.onFinish();
                 }
             });
 

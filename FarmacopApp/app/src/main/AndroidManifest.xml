@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
 
     <application
         android:allowBackup="true"
@@ -88,6 +89,7 @@
             android:showOnLockScreen="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>

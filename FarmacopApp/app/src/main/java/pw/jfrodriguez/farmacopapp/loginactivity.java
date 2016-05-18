@@ -262,7 +262,13 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     dialogo.cancel();
-                    MostrarAcceptDialog( "Error al comprobar la cuentas");
+                    MostrarAcceptDialog("Error al comprobar la cuentas");
+                }
+
+                @Override
+                public void onFinish() {
+                    dialogo.cancel();
+                    super.onFinish();
                 }
             });
 
@@ -373,6 +379,12 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     dialogo.cancel();
                 }
+
+                @Override
+                public void onFinish() {
+                    dialogo.cancel();
+                    super.onFinish();
+                }
             });
 
 
@@ -433,23 +445,28 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void MostrarAcceptDialog(String message){
-        LayoutInflater layoutInflater = LayoutInflater.from(loginactivity.this);
-        View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(loginactivity.this);
-        alertDialogBuilder.setView(promptView);
+        try {
+            LayoutInflater layoutInflater = LayoutInflater.from(loginactivity.this);
+            View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(loginactivity.this);
+            alertDialogBuilder.setView(promptView);
 
-        TextView textView = (TextView) promptView.findViewById(R.id.textViewtext);
-        textView.setText(message);
-        // setup a dialog window
-        alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                });
+            TextView textView = (TextView) promptView.findViewById(R.id.textViewtext);
+            textView.setText(message);
+            // setup a dialog window
+            alertDialogBuilder.setCancelable(false)
+                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    });
 
-        // create an alert dialog
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
+            // create an alert dialog
+            AlertDialog alert = alertDialogBuilder.create();
+            alert.show();
+        }
+        catch (Exception e){
+
+        }
     }
 
 }

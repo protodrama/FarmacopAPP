@@ -34,12 +34,14 @@ import cz.msebera.android.httpclient.Header;
 public class backgroundService extends Service {
 
     public static Boolean Started = false;
-    public static Integer Wait = 1;
-    public static Integer Wait2 = 3;
+    public static String UserName = "";
     public static ArrayList<String> ListId = new ArrayList<>();
     public static ArrayList<String> PreviousListId = new ArrayList<>();
     public static AlarmManager myAlarmManager;
     public static PendingIntent pendingIntent;
+    public static Integer SettedHour;
+    public static Integer SettedMinute;
+    public static String DateNow;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -80,11 +82,10 @@ public class backgroundService extends Service {
         while(true) {
             try {
                 RetrieveSesionData(true);
-                Thread.sleep(1000 * 60 * Wait);
+                Thread.sleep(1000 * 30);
                 Log.i("milog", "se duerme");
             } catch (InterruptedException e) {
             }
-
         }
     }
 
@@ -95,6 +96,11 @@ public class backgroundService extends Service {
         String apikey = Preferences.getString(GenConf.APIKEY,null);
 
         if(account != null && apikey != null) {
+            if(!UserName.equals(account)){
+                SettedHour = -1;
+                SettedMinute = -1;
+            }
+            UserName = account;
             if(isMSGListener)
                 GetNotReadedMessages(account,apikey);
             else
@@ -171,23 +177,23 @@ public class backgroundService extends Service {
     public void showMessage(int num){
         Log.i("milog", "notificacion!");
         try {
-                NotificationCompat.Builder builder =
-                        new NotificationCompat.Builder(this)
-                                .setSmallIcon(R.mipmap.ic_appicon)
-                                .setContentTitle("Mensajes")
-                                .setContentText("Tienes " + num + " mensajes sin leer.")
-                                .setAutoCancel(true);
+            NotificationCompat.Builder builder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.mipmap.ic_appicon)
+                            .setContentTitle("Mensajes")
+                            .setContentText("Tienes " + num + " mensajes sin leer.")
+                            .setAutoCancel(true);
 
-                int NOTIFICATION_ID = 12345;
+            int NOTIFICATION_ID = 12345;
 
-                Intent targetIntent = new Intent(this, StartActivity.class);
-                targetIntent.putExtra(GenConf.SeeMessages,"");
-                PendingIntent contentIntent = PendingIntent.getActivity(this, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                builder.setContentIntent(contentIntent);
-                NotificationManager nManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                Notification TheNotification = builder.build();
-                TheNotification.defaults |= Notification.DEFAULT_VIBRATE;
-                TheNotification.defaults |= Notification.DEFAULT_SOUND;
+            Intent targetIntent = new Intent(this, StartActivity.class);
+            targetIntent.putExtra(GenConf.SeeMessages,"");
+            PendingIntent contentIntent = PendingIntent.getActivity(this, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(contentIntent);
+            NotificationManager nManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            Notification TheNotification = builder.build();
+            TheNotification.defaults |= Notification.DEFAULT_VIBRATE;
+            TheNotification.defaults |= Notification.DEFAULT_SOUND;
             nManager.notify(NOTIFICATION_ID, TheNotification);
 
         }
@@ -200,7 +206,7 @@ public class backgroundService extends Service {
         while(true) {
             try {
                 RetrieveSesionData(false);
-                Thread.sleep(1000 * 60 * (Wait2 / 2));
+                Thread.sleep(1000 * 30);
                 Log.i("milog", "se duerme");
             } catch (InterruptedException e) {
             }
@@ -268,7 +274,7 @@ public class backgroundService extends Service {
 
                 for(int i = 0; i < ListControlToday.size(); i++){
                     if(ListControlToday.get(i).getInt("Hora") == Hour && ListControlToday.get(i).getInt("Minuto") == Minute)
-                        Data.add(ListControlToday.get(i).getString("med") + " -- " + ListControlToday.get(i).getString("Dosis"));
+                        Data.add(ListControlToday.get(i).getString("med") + " -- " + ListControlToday.get(i).getString("Dosis") + " mg");
                 }
 
                 if(Data.size() > 0){
@@ -276,20 +282,31 @@ public class backgroundService extends Service {
                         Calendar calendar = Calendar.getInstance();
                         calendar.set(calendar.HOUR_OF_DAY, Hour);
                         calendar.set(calendar.MINUTE, Minute);
-                        calendar.set(calendar.SECOND, 20);
+                        calendar.set(calendar.SECOND, 40);
                         Intent alarmAct = new Intent(this, Alarm.class);
                         alarmAct.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         alarmAct.putStringArrayListExtra("Data", Data);
+                        alarmAct.putExtra("Hour", Hour);
+                        alarmAct.putExtra("Minute",Minute);
+                        alarmAct.putExtra("Date",DateNow);
+                        alarmAct.putExtra("Username",UserName);
 
                         if (myAlarmManager == null)
                             myAlarmManager = ((AlarmManager) getSystemService(ALARM_SERVICE));
                         else {
-                            if (pendingIntent != null)
+                            if (pendingIntent != null && (SettedHour != Hour || SettedMinute != Minute))
                                 myAlarmManager.cancel(pendingIntent);
                         }
-                        pendingIntent = PendingIntent.getActivity(this, 0, alarmAct, PendingIntent.FLAG_ONE_SHOT);
-                        myAlarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                        Log.i("milog", " Alarma programada");
+
+                        if(SettedHour != Hour || SettedMinute != Minute) {
+                            pendingIntent = PendingIntent.getActivity(this, 0, alarmAct, PendingIntent.FLAG_ONE_SHOT);
+                            myAlarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                            SettedHour = Hour;
+                            SettedMinute = Minute;
+                            Log.i("milog", " Alarma programada");
+                        }
+                        else
+                            Log.i("milog", "Misma hora");
                     }
                     catch (Exception e){
                         Log.i("milog", e.getMessage());
@@ -311,7 +328,7 @@ public class backgroundService extends Service {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Calendar myDate = Calendar.getInstance();
-            String DateNow = format.format(myDate.getTime());
+            DateNow = format.format(myDate.getTime());
             Log.i("milog", "fecha actual" + DateNow);
             for (int i = 0; i < Control.length(); i++) {
                 String dtStart = Control.getJSONObject(i).getString("Fecha");

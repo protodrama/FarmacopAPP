@@ -21,6 +21,7 @@ public class GenConf {
     public static final String UserDataURL = "https://jfrodriguez.pw/slimrest/api/Userdata";
     public static final String ServiceNotReadedMessagesURL = "https://jfrodriguez.pw/slimrest/api/NotReadedMessages";
     public static final String GetControlsURL = "https://jfrodriguez.pw/slimrest/api/GetControl";
+    public static final String UpdateControlsURL = "https://jfrodriguez.pw/slimrest/api/UpdateControl";
 
     public static final String SAVEDSESION = "sesion_data";
 
@@ -49,10 +50,6 @@ public class GenConf {
             MD5Hash.append(h);
         }
         return "" + MD5Hash;
-    }
-
-    public static void MostrarToast(Context contexto, String mensaje){
-        Toast.makeText(contexto, mensaje, Toast.LENGTH_LONG).show();
     }
 
 }
