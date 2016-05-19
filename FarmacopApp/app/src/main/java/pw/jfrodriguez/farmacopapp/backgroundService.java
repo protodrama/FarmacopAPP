@@ -264,8 +264,9 @@ public class backgroundService extends Service {
             Log.i("milog", " tamaño de lista " + ListControlToday.size());
             if(ListControlToday.size() > 0){
                 for(int i = 0; i < ListControlToday.size(); i++){
-                    if(ListControlToday.get(i).getInt("Hora") < Hour)
+                    if(ListControlToday.get(i).getInt("Hora") < Hour) {
                         Hour = ListControlToday.get(i).getInt("Hora");
+                    }
                     if(ListControlToday.get(i).getInt("Hora") == Hour)
                             if(ListControlToday.get(i).getInt("Minuto") < Minute)
                                 Minute = ListControlToday.get(i).getInt("Minuto");
@@ -286,8 +287,8 @@ public class backgroundService extends Service {
                         Intent alarmAct = new Intent(this, Alarm.class);
                         alarmAct.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         alarmAct.putStringArrayListExtra("Data", Data);
-                        alarmAct.putExtra("Hour", Hour);
-                        alarmAct.putExtra("Minute",Minute);
+                        alarmAct.putExtra("Hour", "" + Hour);
+                        alarmAct.putExtra("Minute", "" + Minute);
                         alarmAct.putExtra("Date",DateNow);
                         alarmAct.putExtra("Username",UserName);
 

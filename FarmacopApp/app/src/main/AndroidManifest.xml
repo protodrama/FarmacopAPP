@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -67,11 +67,6 @@
             android:label="@string/title_activity_recetas"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".mensajes"
-            android:label="@string/title_activity_mensajes"
-            android:parentActivityName=".Principal"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".nuevomensaje"
             android:label="@string/title_activity_nuevomensaje"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -86,10 +81,9 @@
         <activity
             android:name=".Alarm"
             android:label="@string/title_activity_alarm"
-            android:showOnLockScreen="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:showOnLockScreen="true"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

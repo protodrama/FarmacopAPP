@@ -117,7 +117,8 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     protected void onDestroy() {
-        //Tambien llamar a actualizar toma
+        if(mp.isPlaying())
+            mp.stop();
         super.onDestroy();
     }
 

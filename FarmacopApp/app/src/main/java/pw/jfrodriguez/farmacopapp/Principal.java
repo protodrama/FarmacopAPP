@@ -47,8 +47,8 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
         }
         if(GenConf.OpenedToSeeMessages)
         {
-            Intent messages = new Intent(this,mensajes.class);
-            startActivity(messages);
+            //Intent messages = new Intent(this,mensajes.class);
+            //startActivity(messages);
         }
     }
 
@@ -139,8 +139,8 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
                 startActivity(a);
                 break;
             case R.id.showmessages:
-                Intent m = new Intent(this,mensajes.class);
-                startActivity(m);
+                //Intent m = new Intent(this,mensajes.class);
+                //startActivity(m);
                 break;
             case R.id.showprofile:
                 Intent i = new Intent(this,Profile.class);
