@@ -29,6 +29,7 @@
 
         <activity
             android:name=".StartActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,6 +50,7 @@
             android:name=".Principal"
             android:label="@string/title_activity_principal"
             android:parentActivityName=".StartActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ActiveAccount"
@@ -84,6 +86,15 @@
             android:screenOrientation="portrait"
             android:showOnLockScreen="true"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".messages"
+            android:label="@string/title_activity_messages"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SeeMessage"
+            android:label="@string/title_activity_see_message"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
