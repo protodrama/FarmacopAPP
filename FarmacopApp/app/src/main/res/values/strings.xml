@@ -32,4 +32,5 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_messages">Mensajes</string>
     <string name="title_activity_see_message">Mensaje</string>
+    <string name="title_activity_new_message">NewMessage</string>
 </resources>

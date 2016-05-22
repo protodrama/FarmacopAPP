@@ -23,9 +23,9 @@ public class Message implements Serializable {
 
     public String ShowInTextView(){
         if(Writer.equals(Sesion.NombreUsuario))
-            return Receptor;
+            return "Para " + Receptor;
         else
-            return Writer;
+            return "De " + Writer;
     }
 
     public String GetSubjectToShow(){

@@ -33,6 +33,7 @@ public class messages extends AppCompatActivity {
     ViewPager viewPager;
     ProgressDialog dialogo;
     TabLayout tabLayout;
+    public static Integer TabShowing = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +55,17 @@ public class messages extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
-
+        TabShowing = tabLayout.getSelectedTabPosition();
     }
-
 
     public void CloseActivity(){
         this.finish();
+    }
+
+    @Override
+    protected void onStop() {
+        TabShowing = tabLayout.getSelectedTabPosition();
+        super.onStop();
     }
 
     @Override
@@ -148,6 +154,7 @@ public class messages extends AppCompatActivity {
 
             }
         });
+        viewPager.setCurrentItem(TabShowing);
     }
 
     public ArrayList<Message> ReadMessages(JSONArray MessageList) throws JSONException {
@@ -169,9 +176,6 @@ public class messages extends AppCompatActivity {
         return messageList;
 
     }
-
-
-
 
     public void MostrarAcceptDialog(String message){
         try {

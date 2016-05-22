@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Credentials;
 import android.net.Uri;
@@ -122,6 +123,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnEntrar:
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
                 CheckLogin(txtName.getText().toString(), txtPass.getText().toString());
                 break;
             case R.id.activeAccount:
@@ -195,6 +197,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                         ComprobarCredenciales(response.getJSONArray("data"),NombreUsuario,Pass);
                     } catch (JSONException e) {
                         MostrarAcceptDialog("Error al acceder a los datos de las credenciales");
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                     }
                 }
 
@@ -202,6 +205,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     dialogo.cancel();
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                     MostrarAcceptDialog("Error al acceder a los datos de las credenciales");
                 }
             });
@@ -210,6 +214,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         }
         catch (Exception e){
             MostrarAcceptDialog("Error al comprobar el usuario: " + e.getMessage());
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         }
     }
 
@@ -371,6 +376,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                         StartMainActivity();
                     } catch (JSONException e) {
                         MostrarAcceptDialog("Error al acceder a los datos de la cuenta.");
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                     }
                 }
 
@@ -378,6 +384,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     dialogo.cancel();
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 }
 
                 @Override
@@ -390,7 +397,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
 
         }
         catch (Exception e){
-
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         }
     }
 

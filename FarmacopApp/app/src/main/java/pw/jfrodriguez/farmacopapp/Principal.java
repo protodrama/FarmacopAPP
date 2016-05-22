@@ -53,7 +53,7 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
     }
 
     public void OpenNewMessageActivity(){
-        Intent r = new Intent(this,nuevomensaje.class);
+        Intent r = new Intent(this,NewMessage.class);
         startActivity(r);
     }
 

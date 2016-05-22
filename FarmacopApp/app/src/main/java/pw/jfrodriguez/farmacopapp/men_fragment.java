@@ -20,16 +20,11 @@ import java.util.ArrayList;
 public class men_fragment extends Fragment {
 
     RecyclerView miLista;
-    ArrayList<Message> ListToShow;
-    Context contexto;
+    public ArrayList<Message> ListToShow;
+    public Context contexto;
     MenAdapter myadapter;
 
     public men_fragment(){}
-
-    public men_fragment(Context contexto,ArrayList<Message> messageList){
-        this.ListToShow = messageList;
-        this.contexto = contexto;
-    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

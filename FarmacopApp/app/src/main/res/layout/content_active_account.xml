@@ -27,6 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/TextViewFarmacopGreen"
+                android:textSize="25dp"
                 android:text="Nombre de cuenta:" />
 
             <EditText
@@ -42,6 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/TextViewFarmacopGreen"
+                android:textSize="25dp"
                 android:text="Contraseña:" />
 
             <EditText
@@ -57,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/TextViewFarmacopGreen"
+                android:textSize="25dp"
                 android:text="Repetir contraseña:" />
 
             <EditText

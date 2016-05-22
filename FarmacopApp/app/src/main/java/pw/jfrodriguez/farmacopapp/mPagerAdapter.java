@@ -50,13 +50,19 @@ public class mPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                men_fragment tab1 = new men_fragment(contexto,News);
+                men_fragment tab1 = new men_fragment();
+                tab1.contexto = contexto;
+                tab1.ListToShow = News;
                 return tab1;
             case 1:
-                men_fragment tab2 = new men_fragment(contexto,Readed);
+                men_fragment tab2 = new men_fragment();
+                tab2.contexto = contexto;
+                tab2.ListToShow = Readed;
                 return tab2;
             case 2:
-                men_fragment tab3 = new men_fragment(contexto,Sended);
+                men_fragment tab3 = new men_fragment();
+                tab3.contexto = contexto;
+                tab3.ListToShow = Sended;
                 return tab3;
             default:
                 return null;

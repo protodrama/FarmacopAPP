@@ -13,4 +13,117 @@
     tools:context="pw.jfrodriguez.farmacopapp.SeeMessage"
     tools:showIn="@layout/activity_see_message">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="4dp">
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextViewFarmacopGreen"
+                android:textSize="25dp"
+                android:layout_gravity="left"
+
+                android:text="Escritor:" />
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextViewFarmacopGreen"
+                    android:textSize="25dp"
+                    android:layout_gravity="left"
+                    android:layout_marginRight="2dp"
+                    android:text="Lector:" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/txtWriter"
+                    android:layout_height="wrap_content"
+                    style="@style/EditTextStyle"
+                    android:textSize="25dp"
+                    android:ems="10"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtReader"
+                    style="@style/EditTextStyle"
+                    android:textSize="25dp"
+                    android:ems="10"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center_horizontal" />
+
+            </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextViewFarmacopGreen"
+                android:textSize="25dp"
+                android:layout_gravity="left"
+                android:layout_marginRight="2dp"
+                android:text="Asunto:" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtSubject"
+                style="@style/EditTextStyle"
+                android:textSize="25dp"
+                android:textColor="@android:color/black"
+                android:ems="10"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextViewFarmacopGreen"
+                android:textSize="25dp"
+                android:layout_gravity="left"
+                android:layout_marginRight="2dp"
+                android:text="Mensaje:" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="@style/EditTextStyle"
+                android:textSize="25dp"
+                android:ems="10"
+                android:textColor="@android:color/black"
+                android:id="@+id/txtmessage" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
 </LinearLayout>

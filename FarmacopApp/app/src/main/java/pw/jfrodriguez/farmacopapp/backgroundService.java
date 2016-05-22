@@ -106,6 +106,10 @@ public class backgroundService extends Service {
             else
                 GetControlToday(account,apikey);
         }
+        else{
+            if(myAlarmManager != null && pendingIntent != null)
+                myAlarmManager.cancel(pendingIntent);
+        }
     }
 
     private void GetNotReadedMessages(String Account, String Apikey) {

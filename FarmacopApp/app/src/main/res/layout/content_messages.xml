@@ -32,6 +32,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolholder"
         android:background="?attr/colorPrimary"
+        app:tabIndicatorColor="@color/colorLight"
+        app:tabSelectedTextColor="@color/colorLight"
+        app:tabTextColor="@android:color/white"
         android:elevation="6dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
