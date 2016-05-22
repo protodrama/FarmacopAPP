@@ -149,6 +149,7 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
                 @Override
                 public void onFinish() {
                     super.onFinish();
+                    CloseActivity();
                 }
             });
         }
