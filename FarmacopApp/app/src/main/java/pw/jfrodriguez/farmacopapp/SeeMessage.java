@@ -5,12 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -51,7 +49,7 @@ public class SeeMessage extends AppCompatActivity {
         try{
             TheMessage = (Message)getIntent().getExtras().get("message");
 
-            if(TheMessage.Writer.equals(Sesion.NombreUsuario)) {
+            if(TheMessage.Writer.equals(Session.UserName)) {
                 fab.hide();
                 NeedUpdate = false;
             }
@@ -102,8 +100,8 @@ public class SeeMessage extends AppCompatActivity {
                 cliente.setMaxRetriesAndTimeout(0, 10000);
 
                 RequestParams parametros = new RequestParams();
-                parametros.put("account", Sesion.NombreUsuario);
-                parametros.put("apikey", Sesion.Apikey);
+                parametros.put("account", Session.UserName);
+                parametros.put("apikey", Session.Apikey);
                 parametros.put("id", TheMessage.ID);
 
                 cliente.put(this, GenConf.ReadMessageURL, parametros, new JsonHttpResponseHandler() {

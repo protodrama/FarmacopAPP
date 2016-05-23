@@ -1,12 +1,9 @@
 package pw.jfrodriguez.farmacopapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.content.WakefulBroadcastReceiver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -89,14 +86,14 @@ public class StartActivity extends AppCompatActivity {
     }
 
     public void GetAllUserData(JSONObject data) throws  JSONException{
-        Sesion.NombreUsuario = data.getString("Cuenta");
-        Sesion.Nombre = data.getString("Nombre");
-        Sesion.Correo = data.getString("correo");
-        Sesion.Apellido1 = data.getString("Apellido1");
-        Sesion.Apellido2 = data.getString("Apellido2");
-        Sesion.Apikey = data.getString("APIKEY");
-        Sesion.FNac = data.getString("FechaNac");
-        Sesion.Pass = data.getString("Contrasena");
+        Session.UserName = data.getString("Cuenta");
+        Session.Name = data.getString("Nombre");
+        Session.Email = data.getString("correo");
+        Session.FirstSur = data.getString("Apellido1");
+        Session.SecondSur = data.getString("Apellido2");
+        Session.Apikey = data.getString("APIKEY");
+        Session.FNac = data.getString("FechaNac");
+        Session.Pass = data.getString("Contrasena");
     }
 
     public void StartLoginActivity(){

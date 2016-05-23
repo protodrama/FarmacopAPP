@@ -3,10 +3,7 @@ package pw.jfrodriguez.farmacopapp;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -19,7 +16,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
@@ -78,8 +74,8 @@ public class NewMessage extends AppCompatActivity implements View.OnClickListene
 
     public void SendMessage(String subject, String message){
         try {
-            final String Username = Sesion.NombreUsuario;
-            final String Apikey = Sesion.Apikey;
+            final String Username = Session.UserName;
+            final String Apikey = Session.Apikey;
 
             AsyncHttpClient cliente = new AsyncHttpClient();
             cliente.setMaxRetriesAndTimeout(0, 10000);

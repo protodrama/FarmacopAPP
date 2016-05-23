@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -81,8 +78,8 @@ public class messages extends AppCompatActivity {
             dialogo.setMessage("Actualizando mensajes");
             dialogo.setCancelable(false);
 
-            final String NombreUsuario = Sesion.NombreUsuario;
-            final String Apikey = Sesion.Apikey;
+            final String NombreUsuario = Session.UserName;
+            final String Apikey = Session.Apikey;
 
             AsyncHttpClient cliente = new AsyncHttpClient();
             cliente.setMaxRetriesAndTimeout(0, 10000);

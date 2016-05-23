@@ -10,13 +10,13 @@ import java.util.ArrayList;
  * Created by juanfran on 24/02/2016.
  */
 
-public class Sesion {
+public class Session {
 
-    static String NombreUsuario;
-    static String Correo;
-    static String Nombre;
-    static String Apellido1;
-    static String Apellido2;
+    static String UserName;
+    static String Email;
+    static String Name;
+    static String FirstSur;
+    static String SecondSur;
     static String FNac;
     static String Pass;
     static String Apikey;

@@ -1,6 +1,5 @@
 package pw.jfrodriguez.farmacopapp;
 
-import android.accounts.Account;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
@@ -9,22 +8,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.net.Credentials;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.CallLog;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -34,12 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Random;
-
-import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -402,14 +390,14 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void GetAllUserData(JSONObject data) throws  JSONException{
-        Sesion.NombreUsuario = data.getString("Cuenta");
-        Sesion.Nombre = data.getString("Nombre");
-        Sesion.Correo = data.getString("correo");
-        Sesion.Apellido1 = data.getString("Apellido1");
-        Sesion.Apellido2 = data.getString("Apellido2");
-        Sesion.Apikey = data.getString("APIKEY");
-        Sesion.FNac = data.getString("FechaNac");
-        Sesion.Pass = data.getString("Contrasena");
+        Session.UserName = data.getString("Cuenta");
+        Session.Name = data.getString("Nombre");
+        Session.Email = data.getString("correo");
+        Session.FirstSur = data.getString("Apellido1");
+        Session.SecondSur = data.getString("Apellido2");
+        Session.Apikey = data.getString("APIKEY");
+        Session.FNac = data.getString("FechaNac");
+        Session.Pass = data.getString("Contrasena");
     }
 
     public void StartMainActivity(){

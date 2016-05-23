@@ -15,14 +15,14 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        if(Writer.equals(Sesion.NombreUsuario))
+        if(Writer.equals(Session.UserName))
             return Receptor + " -- " + Subject;
         else
             return Writer + " -- " + Subject;
     }
 
     public String ShowInTextView(){
-        if(Writer.equals(Sesion.NombreUsuario))
+        if(Writer.equals(Session.UserName))
             return "Para " + Receptor;
         else
             return "De " + Writer;

@@ -1,7 +1,6 @@
 package pw.jfrodriguez.farmacopapp;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -33,7 +32,7 @@ public class mPagerAdapter extends FragmentStatePagerAdapter {
         for(int i = 0; i < messageList.size(); i++){
 
             Message Temp = messageList.get(i);
-            if(Temp.Receptor.equals(Sesion.NombreUsuario)){
+            if(Temp.Receptor.equals(Session.UserName)){
                 if(Temp.isread)
                     Readed.add(Temp);
                 else
