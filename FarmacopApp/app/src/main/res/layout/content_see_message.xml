@@ -11,9 +11,11 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="pw.jfrodriguez.farmacopapp.SeeMessage"
+    android:background="@color/colorWhite"
     tools:showIn="@layout/activity_see_message">
 
     <ScrollView
+        android:background="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

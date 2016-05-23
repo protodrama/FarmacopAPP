@@ -99,9 +99,9 @@ public class messages extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     try {
-                        dialogo.cancel();
                         ShowLists(response.getJSONArray("data"));
                     } catch (JSONException e) {
+                        dialogo.cancel();
                         MostrarAcceptDialog("Error al acceder a los datos de la cuenta.");
                         CloseActivity();
                     }
@@ -152,6 +152,7 @@ public class messages extends AppCompatActivity {
             }
         });
         viewPager.setCurrentItem(TabShowing);
+        dialogo.cancel();
     }
 
     public ArrayList<Message> ReadMessages(JSONArray MessageList) throws JSONException {

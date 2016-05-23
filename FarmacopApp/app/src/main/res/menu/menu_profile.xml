@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="pw.jfrodriguez.farmacopapp.loginactivity">
+
+    <item
+        android:id="@+id/action_modify"
+        android:orderInCategory="100"
+        android:title="Modificar perfil"
+        app:showAsAction="never" />
+
+</menu>

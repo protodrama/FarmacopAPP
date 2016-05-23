@@ -31,14 +31,13 @@ public class NewMessage extends AppCompatActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_message);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CloseActivity();
             }
         });
-
-        setSupportActionBar(toolbar);
 
         try{
             TargetUser = getIntent().getExtras().getString("answerto");
@@ -56,7 +55,7 @@ public class NewMessage extends AppCompatActivity implements View.OnClickListene
     }
 
     public void CloseActivity(){
-        this.finish();
+        finish();
     }
 
     @Override

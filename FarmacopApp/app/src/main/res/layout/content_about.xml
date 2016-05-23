@@ -10,6 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="pw.jfrodriguez.farmacopapp.About"
+    android:background="@color/colorWhite"
     tools:showIn="@layout/activity_about">
 <ScrollView
     android:layout_width="match_parent"

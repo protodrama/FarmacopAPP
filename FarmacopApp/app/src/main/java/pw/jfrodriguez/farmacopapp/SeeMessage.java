@@ -28,13 +28,13 @@ public class SeeMessage extends AppCompatActivity {
         NeedUpdate = false;
         setContentView(R.layout.activity_see_message);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CloseActivity();
             }
         });
-        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +56,6 @@ public class SeeMessage extends AppCompatActivity {
             else{
                 if(!TheMessage.isread) {
                     NeedUpdate = true;
-                    Updated = false;
                 }
             }
 
@@ -69,7 +68,8 @@ public class SeeMessage extends AppCompatActivity {
             message = (TextView)findViewById(R.id.txtmessage);
             message.setText(TheMessage.Message);
 
-            UpdateMessageToRead();
+            if(NeedUpdate)
+                UpdateMessageToRead();
         }catch (Exception e)
         {
             NeedUpdate = false;
@@ -79,14 +79,9 @@ public class SeeMessage extends AppCompatActivity {
     }
 
     public void CloseActivity(){
-        if(NeedUpdate){
-            while(!Updated){
-                try {
-                    Thread.sleep(100);
-                } catch (Exception e){}
-            }
+        if(!NeedUpdate){
+            this.finish();
         }
-        this.finish();
     }
 
     @Override
@@ -113,7 +108,7 @@ public class SeeMessage extends AppCompatActivity {
                     @Override
                     public void onFinish() {
                         super.onFinish();
-                        Updated = true;
+                        NeedUpdate = false;
                     }
                 });
             }

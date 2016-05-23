@@ -42,6 +42,7 @@
 
             <EditText
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:id="@+id/txtName"
                 style="@style/EditTextStyle"
@@ -61,6 +62,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:inputType="textPassword"
+                android:layout_height="30dp"
                 android:id="@+id/txtPass"
                 style="@style/EditTextStyle"
                 android:hint="contraseña"
