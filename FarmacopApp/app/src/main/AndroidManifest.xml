@@ -60,10 +60,7 @@
             android:name=".Profile"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".horariotomas"
-            android:label="@string/title_activity_horariotomas"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".recetas"
             android:label="@string/title_activity_recetas"
@@ -99,6 +96,10 @@
         <activity
             android:name=".Modify_profile"
             android:label="@string/title_activity_modify_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ControlTime"
+            android:label="@string/title_activity_control_time"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

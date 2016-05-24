@@ -25,6 +25,7 @@ public class GenConf {
     public static final String GetAllMessagesURL = "https://jfrodriguez.pw/slimrest/api/GetMessages";
     public static final String ReadMessageURL = "https://jfrodriguez.pw/slimrest/api/ReadMessage";
     public static final String AddMessageURL = "https://jfrodriguez.pw/slimrest/api/AddMessage";
+    public static final String UpdateUserURL = "https://jfrodriguez.pw/slimrest/api/UpdateUser";
 
 
     public static final String SAVEDSESION = "sesion_data";

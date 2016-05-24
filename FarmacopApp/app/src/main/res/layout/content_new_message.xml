@@ -55,6 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
+        android:singleLine="false"
         android:id="@+id/txtmessage"
         style="@style/EditTextStyle"
         android:textSize="25dp"

@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat;
 public class Profile extends AppCompatActivity {
 
     TextView txtUserName,txtName,txtFSur,txtSSur,txtFNac,txtEmail;
-    SimpleDateFormat formatter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +36,6 @@ public class Profile extends AppCompatActivity {
         txtSSur = (TextView)findViewById(R.id.txtSecondSur);
         txtFNac = (TextView)findViewById(R.id.txtFNac);
         txtEmail = (TextView)findViewById(R.id.txtEmail);
-        formatter = new SimpleDateFormat("dd/MM/yyyy");
     }
 
     @Override
@@ -48,8 +46,7 @@ public class Profile extends AppCompatActivity {
         txtFSur.setText(Session.FirstSur);
         txtSSur.setText(Session.SecondSur);
         txtEmail.setText(Session.Email);
-        Date temp = Date.valueOf(Session.FNac);
-        txtFNac.setText(formatter.format(temp));
+        txtFNac.setText(Session.FNac);
     }
 
     public void CloseActivity(){
@@ -69,7 +66,8 @@ public class Profile extends AppCompatActivity {
         Intent i = null;
 
         if (id == R.id.action_modify) {
-
+            i = new Intent(this,Modify_profile.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

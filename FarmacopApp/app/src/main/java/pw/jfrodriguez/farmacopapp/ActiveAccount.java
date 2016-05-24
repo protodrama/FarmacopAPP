@@ -171,7 +171,7 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                         else
                             throw new JSONException("");
                     } catch (JSONException e) {
-                        MostrarAcceptDialog("Error al al activar cuenta.");
+                        MostrarAcceptDialog("Error al activar cuenta.");
                     }
                 }
 
@@ -192,7 +192,7 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
 
         }
         catch (Exception e){
-            MostrarAcceptDialog("Error al al activar cuenta.");
+            MostrarAcceptDialog("Error al activar cuenta.");
         }
     }
 

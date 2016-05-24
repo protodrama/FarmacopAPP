@@ -135,7 +135,7 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
                 startActivity(r);
                 break;
             case R.id.showcontrol:
-                Intent a = new Intent(this,horariotomas.class);
+                Intent a = new Intent(this,ControlTime.class);
                 startActivity(a);
                 break;
             case R.id.showmessages:

@@ -52,7 +52,7 @@ public class messages extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
-        TabShowing = tabLayout.getSelectedTabPosition();
+
     }
 
     public void CloseActivity(){
