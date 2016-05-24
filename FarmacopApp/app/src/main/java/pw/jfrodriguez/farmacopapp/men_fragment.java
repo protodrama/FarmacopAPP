@@ -28,7 +28,7 @@ public class men_fragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View layout = inflater.inflate(R.layout.message_layout, container, false);
+        View layout = inflater.inflate(R.layout.recycler_layout, container, false);
 
         myadapter = new MenAdapter(ListToShow, new MenAdapter.IAdapterOnClick() {
             @Override

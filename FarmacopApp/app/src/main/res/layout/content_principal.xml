@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="pw.jfrodriguez.farmacopapp.Principal"
     android:orientation="vertical"
@@ -52,6 +50,12 @@
 
     </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_height="2dp"
+                android:background="@color/colorLight" />
+
     <LinearLayout
         android:id="@+id/showcontrol"
         android:background="@drawable/linearlayoutstyle"
@@ -83,6 +87,12 @@
 
     </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_height="2dp"
+                android:background="@color/colorLight" />
+
     <LinearLayout
         android:id="@+id/showprofile"
         android:background="@drawable/linearlayoutstyle"
@@ -113,8 +123,13 @@
 
     </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_height="2dp"
+                android:background="@color/colorLight" />
+
     <LinearLayout
-        android:layout_marginTop="10dp"
         android:id="@+id/showmessages"
         android:background="@drawable/linearlayoutstyle"
         android:layout_width="match_parent"
@@ -145,8 +160,13 @@
 
     </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_height="2dp"
+                android:background="@color/colorLight" />
+
     <LinearLayout
-        android:layout_marginTop="10dp"
         android:id="@+id/exit"
         android:background="@drawable/linearlayoutstyle"
         android:layout_width="match_parent"
@@ -175,6 +195,12 @@
 
 
     </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_height="2dp"
+                android:background="@color/colorLight" />
 
         </LinearLayout>
     </ScrollView>

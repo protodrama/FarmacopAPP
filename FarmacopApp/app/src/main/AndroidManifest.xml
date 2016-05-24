@@ -99,6 +99,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ControlTime"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_control_time"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
