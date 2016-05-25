@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class messages extends AppCompatActivity {
+public class messages_activity extends AppCompatActivity {
 
     mPagerAdapter adapter;
     ViewPager viewPager;
@@ -177,9 +177,9 @@ public class messages extends AppCompatActivity {
 
     public void MostrarAcceptDialog(String message){
         try {
-            LayoutInflater layoutInflater = LayoutInflater.from(messages.this);
+            LayoutInflater layoutInflater = LayoutInflater.from(messages_activity.this);
             View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(messages.this);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(messages_activity.this);
             alertDialogBuilder.setView(promptView);
 
             TextView textView = (TextView) promptView.findViewById(R.id.textViewtext);

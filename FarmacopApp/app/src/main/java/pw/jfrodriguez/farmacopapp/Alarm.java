@@ -1,5 +1,6 @@
 package pw.jfrodriguez.farmacopapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
@@ -37,6 +38,8 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
     MediaPlayer mp;
     String UserName,Hour,Minute,Apikey,Date;
     ArrayList<String> Data;
+    ProgressDialog dialogo;
+    static Boolean closed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,19 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
                 CloseActivity();
             }
         }
+
+        dialogo = new ProgressDialog(this);
+        dialogo.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialogo.setMessage("Reportando toma...");
+        dialogo.setCancelable(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(closed){
+            CloseActivity();
+        }
     }
 
     @Override
@@ -107,7 +123,7 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
     }
 
     public void CloseActivity(){
-        this.finish();
+        finish();
     }
 
     @Override
@@ -125,6 +141,7 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         mp.stop();
+
         UpdateAllControl();
     }
 
@@ -143,12 +160,15 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
             cliente.put(this, GenConf.UpdateControlsURL, parametros, new JsonHttpResponseHandler() {
                 @Override
                 public void onStart() {
+                    dialogo.show();
                     super.onStart();
                 }
 
                 @Override
                 public void onFinish() {
+                    dialogo.cancel();
                     super.onFinish();
+                    closed = true;
                     CloseActivity();
                 }
             });

@@ -9,4 +9,10 @@
         android:title="Modificar perfil"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_pass"
+        android:orderInCategory="101"
+        android:title="Cambiar contraseña"
+        app:showAsAction="never" />
+
 </menu>

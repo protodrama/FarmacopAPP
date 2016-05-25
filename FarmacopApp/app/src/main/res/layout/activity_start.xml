@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/iconoapp"
+        android:src="@drawable/iconapp"
         android:id="@+id/appicon"
         android:layout_centerHorizontal="true"
         />

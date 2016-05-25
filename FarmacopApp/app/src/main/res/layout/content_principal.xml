@@ -35,7 +35,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/receta"
+            android:src="@drawable/prescription"
             />
 
         <TextView
@@ -81,7 +81,7 @@
             android:layout_marginRight="10dp"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/tomas"
+            android:src="@drawable/control"
             />
 
 
@@ -154,9 +154,8 @@
             android:layout_marginRight="10dp"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/mensaje"
+            android:src="@drawable/message"
             />
-
 
     </LinearLayout>
 
@@ -181,7 +180,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/salir"
+            android:src="@drawable/exit"
             />
 
         <TextView
@@ -192,7 +191,6 @@
             android:text="Salir"
             android:textSize="28dp"
             android:id="@+id/txtexit" />
-
 
     </LinearLayout>
 

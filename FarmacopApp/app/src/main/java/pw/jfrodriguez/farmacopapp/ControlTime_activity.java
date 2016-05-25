@@ -28,7 +28,7 @@ import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
 
-public class ControlTime extends AppCompatActivity {
+public class ControlTime_activity extends AppCompatActivity {
 
     cPageAdapter adapter;
     ViewPager viewPager;

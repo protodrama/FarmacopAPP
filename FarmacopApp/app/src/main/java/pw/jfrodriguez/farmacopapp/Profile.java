@@ -69,6 +69,10 @@ public class Profile extends AppCompatActivity {
             i = new Intent(this,Modify_profile.class);
             startActivity(i);
         }
+        if(id == R.id.action_pass){
+            i = new Intent(this,ModPass.class);
+            startActivity(i);
+        }
 
         return super.onOptionsItemSelected(item);
     }

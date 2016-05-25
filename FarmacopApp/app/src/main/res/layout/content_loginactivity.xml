@@ -27,7 +27,7 @@
             <ImageView
                 android:layout_width="300dp"
                 android:layout_height="50dp"
-                android:src="@drawable/farmacoptitulo"
+                android:src="@drawable/farmacoptittle"
                 android:layout_gravity="center_horizontal"
                 />
 

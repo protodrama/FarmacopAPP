@@ -61,16 +61,11 @@
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity
-            android:name=".recetas"
-            android:label="@string/title_activity_recetas"
-            android:theme="@style/AppTheme.NoActionBar" />
-
         <service
             android:name=".backgroundService"
             android:enabled="true"
             android:exported="false"
-            android:icon="@drawable/iconoapp"
+            android:icon="@drawable/iconapp"
             android:label="Farmacop message service" />
 
         <activity
@@ -80,7 +75,7 @@
             android:showOnLockScreen="true"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".messages"
+            android:name=".messages_activity"
             android:label="@string/title_activity_messages"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -98,9 +93,18 @@
             android:label="@string/title_activity_modify_profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ControlTime"
-            android:screenOrientation="portrait"
+            android:name=".ControlTime_activity"
             android:label="@string/title_activity_control_time"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ModPass"
+            android:label="@string/title_activity_mod_pass"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".prescriptions_activity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_prescriptions"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

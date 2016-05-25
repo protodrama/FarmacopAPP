@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -184,6 +185,7 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
                         int status = response.getInt("status");
                         if(status == 200) {
                             UpdateSessionData();
+                            Toast.makeText(Modify_profile.this, "Datos de la cuenta actualizados con éxito", Toast.LENGTH_LONG).show();
                             CloseActivity();
                         }
                         else

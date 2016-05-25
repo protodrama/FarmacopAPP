@@ -13,6 +13,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Introduce el nombre de cuenta:"
         style="@style/TextViewFarmacopGreen"
+        android:textSize="20dp"
         android:id="@+id/textViewtext" />
 
 </LinearLayout>

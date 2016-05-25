@@ -111,7 +111,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnEntrar:
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+
                 CheckLogin(txtName.getText().toString(), txtPass.getText().toString());
                 break;
             case R.id.activeAccount:
@@ -160,6 +160,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
 
     public void CheckLogin(String Nombre, String Password){
         try {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             final String NombreUsuario = Nombre;
             final String Pass = GenConf.MD5(Password);
 
@@ -194,11 +195,9 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     dialogo.cancel();
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-                    MostrarAcceptDialog("Error al acceder a los datos de las credenciales");
+                    MostrarAcceptDialog("Error al acceder a los datos de las credenciales. Compruebe su conexión");
                 }
             });
-
-
         }
         catch (Exception e){
             MostrarAcceptDialog("Error al comprobar el usuario: " + e.getMessage());
@@ -210,8 +209,6 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         if(Usuario.length() > 0) {
             JSONObject datos = Usuario.getJSONObject(0);
             if(datos.getString("Cuenta").equals(Nombre) && datos.getString("Contrasena").equals(Password)){
-
-                //OBTENER Y GUARDAR TODOS LOS DATOS DE LA CUENTA LOGUEADA Y OBTENER LOS DATOS DEL USUARIO
                 SaveUserAccount(Nombre, datos.getString("APIKEY"));
                 GetUserData(Nombre,datos.getString("APIKEY"));
                 return;
@@ -222,6 +219,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
 
     public void CheckAccountToRestPassAndSend(String name) {
         try {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             final String NombreUsuario = name;
 
             AsyncHttpClient cliente = new AsyncHttpClient();
@@ -249,6 +247,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                     } catch (JSONException e) {
                         MostrarAcceptDialog("La cuenta indicada no es correcta");
                     }
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 }
 
                 @Override
@@ -256,6 +255,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     dialogo.cancel();
                     MostrarAcceptDialog("Error al comprobar la cuentas");
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 }
 
                 @Override
@@ -283,6 +283,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
 
     public void RestPassAndSend(String name){
         try {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             final String NombreUsuario = name;
 
             AsyncHttpClient cliente = new AsyncHttpClient();
@@ -319,6 +320,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                     } catch (JSONException e) {
                         MostrarAcceptDialog("Error al generar la contraseña");
                     }
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 }
 
                 @Override
@@ -326,6 +328,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     dialogo.cancel();
                     MostrarAcceptDialog("Error al generar la contraseña");
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 }
             });
 
@@ -338,6 +341,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
 
     public void GetUserData(String Nombre,String apikey){
         try {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             final String NombreUsuario = Nombre;
             final String Apikey = apikey;
 

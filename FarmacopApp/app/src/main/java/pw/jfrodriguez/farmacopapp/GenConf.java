@@ -1,7 +1,12 @@
 package pw.jfrodriguez.farmacopapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.security.MessageDigest;
@@ -26,6 +31,8 @@ public class GenConf {
     public static final String ReadMessageURL = "https://jfrodriguez.pw/slimrest/api/ReadMessage";
     public static final String AddMessageURL = "https://jfrodriguez.pw/slimrest/api/AddMessage";
     public static final String UpdateUserURL = "https://jfrodriguez.pw/slimrest/api/UpdateUser";
+    public static final String UpdatePasswordURL = "https://jfrodriguez.pw/slimrest/api/UpdatePassword";
+    public static final String GetMyActivePrescriptionsURL = "https://jfrodriguez.pw/slimrest/api/GetMyActivePrescriptions";
 
 
     public static final String SAVEDSESION = "sesion_data";
@@ -55,6 +62,31 @@ public class GenConf {
             MD5Hash.append(h);
         }
         return "" + MD5Hash;
+    }
+
+    public static void ShowMessageBox(String message,Context contexto){
+        try {
+            LayoutInflater layoutInflater = LayoutInflater.from(contexto);
+            View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(contexto);
+            alertDialogBuilder.setView(promptView);
+
+            TextView textView = (TextView) promptView.findViewById(R.id.textViewtext);
+            textView.setText(message);
+            // setup a dialog window
+            alertDialogBuilder.setCancelable(false)
+                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    });
+
+            // create an alert dialog
+            AlertDialog alert = alertDialogBuilder.create();
+            alert.show();
+        }
+        catch (Exception e){
+
+        }
     }
 
 }
