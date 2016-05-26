@@ -31,4 +31,5 @@
     <string name="title_activity_control_time">Horario de tratamiento</string>
     <string name="title_activity_mod_pass">Modificar contraseña</string>
     <string name="title_activity_prescriptions">Recetas</string>
+    <string name="title_activity_see_prescription">Datos de receta</string>
 </resources>

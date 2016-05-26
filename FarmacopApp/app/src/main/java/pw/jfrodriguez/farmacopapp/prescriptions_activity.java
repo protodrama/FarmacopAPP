@@ -1,6 +1,7 @@
 package pw.jfrodriguez.farmacopapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -126,13 +127,17 @@ public class prescriptions_activity extends AppCompatActivity {
 
         mRecyclerView.setAdapter(new PrecAdapter(prescriptionsList, new PrecAdapter.IPresAdapterOnClick() {
             @Override
-            public void onClickListener(prescription theprescrioption) {
-
+            public void onClickListener(prescription theprescription) {
+                StartSeePrescription(theprescription);
             }
         }));
 
         mdialog.cancel();
     }
 
-
+    public void StartSeePrescription(prescription theprescription){
+        Intent i = new Intent(this,SeePrescription_activity.class);
+        i.putExtra("presc",theprescription);
+        startActivity(i);
+    }
 }

@@ -23,6 +23,7 @@ public class MyPresViewHolder extends RecyclerView.ViewHolder implements View.On
         mListener = listener;
         container.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View v) {
         mListener.onItemClick(ThePrescription);

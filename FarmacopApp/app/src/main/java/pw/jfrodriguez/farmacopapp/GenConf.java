@@ -33,6 +33,7 @@ public class GenConf {
     public static final String UpdateUserURL = "https://jfrodriguez.pw/slimrest/api/UpdateUser";
     public static final String UpdatePasswordURL = "https://jfrodriguez.pw/slimrest/api/UpdatePassword";
     public static final String GetMyActivePrescriptionsURL = "https://jfrodriguez.pw/slimrest/api/GetMyActivePrescriptions";
+    public static final String GetTimeTableFromPrescription = "https://jfrodriguez.pw/slimrest/api/GetPrescriptionsTimetable";
 
 
     public static final String SAVEDSESION = "sesion_data";

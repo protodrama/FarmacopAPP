@@ -1,9 +1,11 @@
 package pw.jfrodriguez.farmacopapp;
 
+import java.io.Serializable;
+
 /**
  * Created by Juanfran on 25/05/2016.
  */
-public class prescription {
+public class prescription implements Serializable {
 
     int ID;
     String medicament;
@@ -12,4 +14,5 @@ public class prescription {
     String endDate;
     String medic;
 
+    public void prescription(){}
 }
