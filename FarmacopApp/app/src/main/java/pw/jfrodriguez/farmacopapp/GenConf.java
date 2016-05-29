@@ -37,10 +37,8 @@ public class GenConf {
 
 
     public static final String SAVEDSESION = "sesion_data";
-
-    public static final String ACCOUNT = "cuenta";
+    public static final String ACCOUNT = "account";
     public static final String APIKEY = "apikey";
-
     public static final String SeeMessages = "SeeMensages";
 
     public static Boolean OpenedToSeeMessages = false;

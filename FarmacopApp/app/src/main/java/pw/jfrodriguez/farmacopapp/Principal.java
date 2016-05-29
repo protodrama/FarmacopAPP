@@ -45,6 +45,7 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
         }
         if(GenConf.OpenedToSeeMessages)
         {
+            GenConf.OpenedToSeeMessages = false;
             Intent messages = new Intent(this,messages_activity.class);
             startActivity(messages);
         }
