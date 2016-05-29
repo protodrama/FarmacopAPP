@@ -46,7 +46,8 @@ public class Profile extends AppCompatActivity {
         txtFSur.setText(Session.FirstSur);
         txtSSur.setText(Session.SecondSur);
         txtEmail.setText(Session.Email);
-        txtFNac.setText(Session.FNac);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        txtFNac.setText(formatter.format(Date.valueOf(Session.FNac)));
     }
 
     public void CloseActivity(){
@@ -63,7 +64,7 @@ public class Profile extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Intent i = null;
+        Intent i;
 
         if (id == R.id.action_modify) {
             i = new Intent(this,Modify_profile.class);

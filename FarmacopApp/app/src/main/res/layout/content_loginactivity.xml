@@ -47,6 +47,7 @@
                 android:id="@+id/txtName"
                 style="@style/EditTextStyle"
                 android:hint="cuenta"
+                android:digits="abcdefghijklmnñopqrstuvwxyz._-ABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890 "
                 android:layout_gravity="center_horizontal" />
 
             <TextView

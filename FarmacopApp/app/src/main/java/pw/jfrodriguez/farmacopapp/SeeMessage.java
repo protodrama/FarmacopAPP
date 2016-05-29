@@ -20,7 +20,6 @@ public class SeeMessage extends AppCompatActivity {
     Message TheMessage;
     TextView Writer,Reader,Subject,message;
     Boolean NeedUpdate;
-    Boolean Updated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +72,7 @@ public class SeeMessage extends AppCompatActivity {
         }catch (Exception e)
         {
             NeedUpdate = false;
-            MostrarAcceptDialog("Error inesperado al cargar la información del mensaje");
+            GenConf.ShowMessageBox("Error inesperado al cargar la información del mensaje",this);
         }
 
     }
@@ -116,31 +115,4 @@ public class SeeMessage extends AppCompatActivity {
 
             }
     }
-
-    public void MostrarAcceptDialog(String message){
-        try {
-            LayoutInflater layoutInflater = LayoutInflater.from(this);
-            View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setView(promptView);
-
-            TextView textView = (TextView) promptView.findViewById(R.id.textViewtext);
-            textView.setText(message);
-            // setup a dialog window
-            alertDialogBuilder.setCancelable(false)
-                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            CloseActivity();
-                        }
-                    });
-
-            // create an alert dialog
-            AlertDialog alert = alertDialogBuilder.create();
-            alert.show();
-        }
-        catch (Exception e){
-
-        }
-    }
-
 }

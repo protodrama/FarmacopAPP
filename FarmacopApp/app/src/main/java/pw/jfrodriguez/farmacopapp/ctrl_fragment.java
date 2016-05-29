@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -18,10 +19,11 @@ import java.util.ArrayList;
  */
 public class ctrl_fragment extends Fragment {
 
-    RecyclerView miLista;
+    RecyclerView miList;
     public ArrayList<Control> ListToShow;
     public Context contexto;
     CtrlAdapter myadapter;
+    TextView empty;
 
     public ctrl_fragment(){}
 
@@ -31,12 +33,18 @@ public class ctrl_fragment extends Fragment {
 
         myadapter = new CtrlAdapter(ListToShow);
 
-        miLista = (RecyclerView)layout.findViewById(R.id.mlista);
+        miList = (RecyclerView)layout.findViewById(R.id.mlist);
+        empty = (TextView)layout.findViewById(R.id.textEmpty);
+
+        if(ListToShow.size() == 0)
+            empty.setVisibility(View.VISIBLE);
+        else
+            empty.setVisibility(View.INVISIBLE);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(contexto);
-        miLista.setLayoutManager(mLayoutManager);
-        miLista.setItemAnimator(new DefaultItemAnimator());
-        miLista.setAdapter(myadapter);
+        miList.setLayoutManager(mLayoutManager);
+        miList.setItemAnimator(new DefaultItemAnimator());
+        miList.setAdapter(myadapter);
 
         return layout;
     }

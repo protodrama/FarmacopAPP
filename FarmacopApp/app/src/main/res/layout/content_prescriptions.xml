@@ -4,30 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="7dp"
-    android:paddingLeft="7dp"
-    android:paddingRight="7dp"
-    android:paddingTop="7dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".prescriptions_activity"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/colorWhite"
     tools:showIn="@layout/activity_prescriptions">
 
-    <LinearLayout
+    <RelativeLayout
         style="@style/EditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true">
 
         <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
             android:background="@color/colorWhite"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:id="@+id/mrecycler"/>
 
-    </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:text="No hay nada"
+            android:textColor="#000000"
+            android:textSize="25dp"
+            android:layout_marginTop="5dp"
+            android:visibility="invisible"
+            android:id="@+id/textEmpty"/>
+
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

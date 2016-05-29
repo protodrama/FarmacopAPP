@@ -117,7 +117,7 @@ public class backgroundService extends Service {
             cliente.setMaxRetriesAndTimeout(0, 10000);
 
             RequestParams parametros = new RequestParams();
-            parametros.put("cuenta", Account);
+            parametros.put("account", Account);
             parametros.put("apikey", Apikey);
 
             cliente.get(GenConf.ServiceNotReadedMessagesURL, parametros, new JsonHttpResponseHandler() {
@@ -223,7 +223,7 @@ public class backgroundService extends Service {
             cliente.setMaxRetriesAndTimeout(0, 10000);
 
             RequestParams parametros = new RequestParams();
-            parametros.put("cuenta", Account);
+            parametros.put("account", Account);
             parametros.put("apikey", Apikey);
 
             cliente.get(GenConf.GetControlsURL, parametros, new JsonHttpResponseHandler() {

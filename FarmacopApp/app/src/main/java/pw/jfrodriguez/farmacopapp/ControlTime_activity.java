@@ -1,17 +1,13 @@
 package pw.jfrodriguez.farmacopapp;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -24,7 +20,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -32,7 +27,7 @@ public class ControlTime_activity extends AppCompatActivity {
 
     cPageAdapter adapter;
     ViewPager viewPager;
-    ProgressDialog dialogo;
+    ProgressDialog mdialog;
     TabLayout tabLayout;
 
     @Override
@@ -89,30 +84,30 @@ public class ControlTime_activity extends AppCompatActivity {
             }
         });
         viewPager.setCurrentItem(0);
-        dialogo.cancel();
+        mdialog.cancel();
     }
 
     public void GetControl() throws JSONException{
         try {
-        dialogo = new ProgressDialog(this);
-        dialogo.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialogo.setMessage("Actualizando mensajes");
-        dialogo.setCancelable(false);
+        mdialog = new ProgressDialog(this);
+        mdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mdialog.setMessage("Actualizando mensajes");
+        mdialog.setCancelable(false);
 
-        final String NombreUsuario = Session.UserName;
+        final String UserName = Session.UserName;
         final String Apikey = Session.Apikey;
 
         AsyncHttpClient cliente = new AsyncHttpClient();
         cliente.setMaxRetriesAndTimeout(0, 10000);
 
         RequestParams parametros = new RequestParams();
-        parametros.put("cuenta", NombreUsuario);
+        parametros.put("account", UserName);
         parametros.put("apikey", Apikey);
 
         cliente.get(this, GenConf.GetControlsURL, parametros, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
-                dialogo.show();
+                mdialog.show();
                 super.onStart();
             }
 
@@ -122,8 +117,8 @@ public class ControlTime_activity extends AppCompatActivity {
                 try {
                     ShowLists(response.getJSONArray("data"));
                 } catch (JSONException e) {
-                    dialogo.cancel();
-                    MostrarAcceptDialog("Error al obtener los horarios de tomas.");
+                    mdialog.cancel();
+                    GenConf.ShowMessageBox("Error al obtener los horarios de tomas.",ControlTime_activity.this);
                     CloseActivity();
                 }
             }
@@ -131,14 +126,14 @@ public class ControlTime_activity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                dialogo.cancel();
-                MostrarAcceptDialog("Error al obtener los horarios de tomas.");
+                mdialog.cancel();
+                GenConf.ShowMessageBox("Error al obtener los horarios de tomas.",ControlTime_activity.this);
                 CloseActivity();
             }
 
             @Override
             public void onFinish() {
-                dialogo.cancel();
+                mdialog.cancel();
                 super.onFinish();
             }
         });
@@ -146,8 +141,8 @@ public class ControlTime_activity extends AppCompatActivity {
 
     }
     catch (Exception e) {
-        dialogo.cancel();
-        MostrarAcceptDialog("Error al obtener los horarios de tomas.");
+        mdialog.cancel();
+        GenConf.ShowMessageBox("Error al obtener los horarios de tomas.",this);
         CloseActivity();
     }
     }
@@ -159,7 +154,7 @@ public class ControlTime_activity extends AppCompatActivity {
         try {
             Calendar myDate = Calendar.getInstance();
             String DateNow = format.format(myDate.getTime());
-            myDate.add(Calendar.DAY_OF_MONTH,1);
+            myDate.add(Calendar.DAY_OF_MONTH, 1);
             String DateTomorrow = format.format(myDate.getTime());
             Log.i("milog", "fecha actual" + DateNow);
             for (int i = 0; i < Controls.length(); i++) {
@@ -190,30 +185,5 @@ public class ControlTime_activity extends AppCompatActivity {
             Log.i("milog", e.getMessage());
         }
         return Data;
-    }
-
-    public void MostrarAcceptDialog(String message){
-        try {
-            LayoutInflater layoutInflater = LayoutInflater.from(this);
-            View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setView(promptView);
-
-            TextView textView = (TextView) promptView.findViewById(R.id.textViewtext);
-            textView.setText(message);
-            // setup a dialog window
-            alertDialogBuilder.setCancelable(false)
-                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    });
-
-            // create an alert dialog
-            AlertDialog alert = alertDialogBuilder.create();
-            alert.show();
-        }
-        catch (Exception e){
-
-        }
     }
 }

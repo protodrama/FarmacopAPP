@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -33,8 +32,8 @@ import cz.msebera.android.httpclient.Header;
 
 public class loginactivity extends AppCompatActivity implements View.OnClickListener,listDialogFragment.NoticeDialogListener {
 
-    ProgressDialog dialogo;
-    EditText txtName,txtPass;
+    ProgressDialog mdialog;
+    EditText txtName, txtPass;
     EditText messageBoxText;
 
     @Override
@@ -43,7 +42,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         LoadActivity();
     }
 
-    public void LoadActivity(){
+    public void LoadActivity() {
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setSubtitleTextColor(Color.WHITE);
@@ -56,31 +55,31 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 CloseActivity();
             }
         });
-        dialogo = new ProgressDialog(this);
-        dialogo.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialogo.setMessage("Comprobando credenciales");
-        dialogo.setCancelable(false);
-        txtName = (EditText)findViewById(R.id.txtName);
-        txtPass = (EditText)findViewById(R.id.txtPass);
+        mdialog = new ProgressDialog(this);
+        mdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mdialog.setMessage("Comprobando credenciales");
+        mdialog.setCancelable(false);
+        txtName = (EditText) findViewById(R.id.txtName);
+        txtPass = (EditText) findViewById(R.id.txtPass);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(GenConf.ShowingRecPassDialog){
-            MostrarAlertDialog();
+        if (GenConf.ShowingRecPassDialog) {
+            ShowRecPasDialog();
         }
     }
 
-    public void SaveUserAccount(String User, String Apikey){
-        SharedPreferences Preferences = getApplicationContext().getSharedPreferences(GenConf.SAVEDSESION,0);
+    public void SaveUserAccount(String User, String Apikey) {
+        SharedPreferences Preferences = getApplicationContext().getSharedPreferences(GenConf.SAVEDSESION, 0);
         SharedPreferences.Editor mEditor = Preferences.edit();
         mEditor.putString(GenConf.ACCOUNT, User);
-        mEditor.putString(GenConf.APIKEY,Apikey);
+        mEditor.putString(GenConf.APIKEY, Apikey);
         mEditor.apply();
     }
 
-    public void CloseActivity(){
+    public void CloseActivity() {
         this.finish();
     }
 
@@ -96,12 +95,12 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         int id = item.getItemId();
         Intent i = null;
         if (id == R.id.action_about) {
-            i = new Intent(this,About.class);
+            i = new Intent(this, About.class);
             startActivity(i);
         }
         if (id == R.id.action_contact) {
             DialogFragment dialogo = new listDialogFragment();
-            dialogo.show(getFragmentManager(),"Contacto");
+            dialogo.show(getFragmentManager(), "Contacto");
         }
 
         return super.onOptionsItemSelected(item);
@@ -109,17 +108,17 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnEntrar:
 
                 CheckLogin(txtName.getText().toString(), txtPass.getText().toString());
                 break;
             case R.id.activeAccount:
-                Intent acc = new Intent(this,ActiveAccount.class);
+                Intent acc = new Intent(this, ActiveAccount.class);
                 startActivity(acc);
                 break;
             case R.id.restartPass:
-                MostrarAlertDialog();
+                ShowRecPasDialog();
                 break;
             default:
                 break;
@@ -128,7 +127,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onStop() {
-        if(GenConf.ShowingRecPassDialog)
+        if (GenConf.ShowingRecPassDialog)
             GenConf.MessageFromRecPassDialog = messageBoxText.getText().toString();
         super.onStop();
     }
@@ -140,11 +139,11 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onDialogUserSelect(DialogFragment dialog, int which) {
-        switch (which){
+        switch (which) {
             case 0:
                 String email = getResources().getString(R.string.correo);
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                        "mailto",email, null));
+                        "mailto", email, null));
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
                 emailIntent.putExtra(Intent.EXTRA_TEXT, "");
                 startActivity(Intent.createChooser(emailIntent, "Enviar email a " + email));
@@ -158,23 +157,23 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void CheckLogin(String Nombre, String Password){
+    public void CheckLogin(String Name, String Password) {
         try {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-            final String NombreUsuario = Nombre;
+            final String UserName = Name;
             final String Pass = GenConf.MD5(Password);
 
             AsyncHttpClient cliente = new AsyncHttpClient();
             cliente.setMaxRetriesAndTimeout(0, 10000);
 
             RequestParams parametros = new RequestParams();
-            parametros.put("cuenta", NombreUsuario);
+            parametros.put("account", UserName);
             parametros.put("apikey", "eadmghacdg");
 
-            cliente.get(this,GenConf.LogURL,parametros,new JsonHttpResponseHandler(){
+            cliente.get(this, GenConf.LogURL, parametros, new JsonHttpResponseHandler() {
                 @Override
                 public void onStart() {
-                    dialogo.show();
+                    mdialog.show();
                     super.onStart();
                 }
 
@@ -182,10 +181,10 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     try {
-                        dialogo.cancel();
-                        ComprobarCredenciales(response.getJSONArray("data"),NombreUsuario,Pass);
+                        mdialog.cancel();
+                        ComprobarCredenciales(response.getJSONArray("data"), UserName, Pass);
                     } catch (JSONException e) {
-                        MostrarAcceptDialog("Error al acceder a los datos de las credenciales");
+                        GenConf.ShowMessageBox("Error al acceder a los datos de las credenciales",loginactivity.this);
                         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                     }
                 }
@@ -193,48 +192,48 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    dialogo.cancel();
+                    mdialog.cancel();
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-                    MostrarAcceptDialog("Error al acceder a los datos de las credenciales. Compruebe su conexión");
+                    GenConf.ShowMessageBox("Error al acceder a los datos de las credenciales. Compruebe su conexión",loginactivity.this);
                 }
             });
-        }
-        catch (Exception e){
-            MostrarAcceptDialog("Error al comprobar el usuario: " + e.getMessage());
+        } catch (Exception e) {
+            GenConf.ShowMessageBox("Error al comprobar el usuario: " + e.getMessage(), loginactivity.this);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         }
     }
 
-    public void ComprobarCredenciales(JSONArray Usuario, String Nombre, String Password) throws JSONException {
-        if(Usuario.length() > 0) {
-            JSONObject datos = Usuario.getJSONObject(0);
-            if(datos.getString("Cuenta").equals(Nombre) && datos.getString("Contrasena").equals(Password)){
-                SaveUserAccount(Nombre, datos.getString("APIKEY"));
-                GetUserData(Nombre,datos.getString("APIKEY"));
+    public void ComprobarCredenciales(JSONArray User, String Name, String Password) throws JSONException {
+        if (User.length() > 0) {
+            JSONObject datos = User.getJSONObject(0);
+            if (datos.getString("Cuenta").equals(Name) && datos.getString("Contrasena").equals(Password)) {
+                SaveUserAccount(Name, datos.getString("APIKEY"));
+                GetUserData(Name, datos.getString("APIKEY"));
                 return;
             }
         }
-        MostrarAcceptDialog("El usuario o la contraseña no son correctos");
+        GenConf.ShowMessageBox("El usuario o la contraseña no son correctos",this);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 
     public void CheckAccountToRestPassAndSend(String name) {
         try {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-            final String NombreUsuario = name;
+            final String UserName = name;
 
             AsyncHttpClient cliente = new AsyncHttpClient();
             cliente.setMaxRetriesAndTimeout(0, 10000);
 
             RequestParams parametros = new RequestParams();
-            parametros.put("cuenta", NombreUsuario);
+            parametros.put("account", UserName);
             parametros.put("apikey", "eadmghacdg");
 
-            dialogo.setMessage("Comprobando cuenta de usuario");
+            mdialog.setMessage("Comprobando cuenta de usuario");
 
-            cliente.get(this,GenConf.CheckUserAcURL,parametros,new JsonHttpResponseHandler(){
+            cliente.get(this, GenConf.CheckUserAcURL, parametros, new JsonHttpResponseHandler() {
                 @Override
                 public void onStart() {
-                    dialogo.show();
+                    mdialog.show();
                     super.onStart();
                 }
 
@@ -242,10 +241,10 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     try {
-                        dialogo.cancel();
-                        CheckData(response.getJSONArray("data"),NombreUsuario);
+                        mdialog.cancel();
+                        CheckData(response.getJSONArray("data"), UserName);
                     } catch (JSONException e) {
-                        MostrarAcceptDialog("La cuenta indicada no es correcta");
+                        GenConf.ShowMessageBox("La cuenta indicada no es correcta",loginactivity.this);
                     }
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 }
@@ -253,60 +252,59 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    dialogo.cancel();
-                    MostrarAcceptDialog("Error al comprobar la cuentas");
+                    mdialog.cancel();
+                    GenConf.ShowMessageBox("Error al comprobar la cuentas",loginactivity.this);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 }
 
                 @Override
                 public void onFinish() {
-                    dialogo.cancel();
+                    mdialog.cancel();
                     super.onFinish();
                 }
             });
 
 
-        }
-        catch (Exception e){
-            MostrarAcceptDialog("Error al comprobar el usuario");
+        } catch (Exception e) {
+            GenConf.ShowMessageBox("Error al comprobar el usuario",this);
         }
 
     }
 
-    public void CheckData(JSONArray data,String name) throws JSONException {
+    public void CheckData(JSONArray data, String name) throws JSONException {
         String username = data.getJSONObject(0).getString("Cuenta");
-        if(username.equals(name))
+        if (username.equals(name))
             RestPassAndSend(name);
         else
-            MostrarAcceptDialog("La cuenta indicada no es correcta");
+            GenConf.ShowMessageBox("La cuenta indicada no es correcta",this);
     }
 
-    public void RestPassAndSend(String name){
+    public void RestPassAndSend(String name) {
         try {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-            final String NombreUsuario = name;
+            final String UserName = name;
 
             AsyncHttpClient cliente = new AsyncHttpClient();
             cliente.setMaxRetriesAndTimeout(0, 10000);
             Random rnd = new Random();
             Integer Low = 100000;
             Integer High = 999999;
-            Integer Result = rnd.nextInt(High-Low) + Low;
+            Integer Result = rnd.nextInt(High - Low) + Low;
             String temp = "" + Result;
             String codigo = GenConf.MD5(temp);
 
             RequestParams parametros = new RequestParams();
-            parametros.put("cuenta", NombreUsuario);
+            parametros.put("account", UserName);
             parametros.put("apikey", GenConf.DEFAPIKEY);
-            parametros.put("codigo",Result);
-            parametros.put("npass",codigo);
+            parametros.put("code", Result);
+            parametros.put("npass", codigo);
 
-            dialogo.setMessage("Procesando...");
+            mdialog.setMessage("Procesando...");
 
-            cliente.get(this,GenConf.RestPassURL,parametros,new JsonHttpResponseHandler(){
+            cliente.get(this, GenConf.RestPassURL, parametros, new JsonHttpResponseHandler() {
                 @Override
                 public void onStart() {
-                    dialogo.show();
+                    mdialog.show();
                     super.onStart();
                 }
 
@@ -314,11 +312,11 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     try {
-                        dialogo.cancel();
-                        if(response.getBoolean("code"))
-                           MostrarAcceptDialog("Se ha enviado un correo a su cuenta de correo con la contraseña nueva. Puede tardar unos minutos.");
+                        mdialog.cancel();
+                        if (response.getBoolean("code"))
+                            GenConf.ShowMessageBox("Se ha enviado un correo a su cuenta de correo con la contraseña nueva. Puede tardar unos minutos.",loginactivity.this);
                     } catch (JSONException e) {
-                        MostrarAcceptDialog("Error al generar la contraseña");
+                        GenConf.ShowMessageBox("Error al generar la contraseña",loginactivity.this);
                     }
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 }
@@ -326,36 +324,35 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    dialogo.cancel();
-                    MostrarAcceptDialog("Error al generar la contraseña");
+                    mdialog.cancel();
+                    GenConf.ShowMessageBox("Error al generar la contraseña",loginactivity.this);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 }
             });
 
 
-        }
-        catch (Exception e){
-            MostrarAcceptDialog("Error al generar la contraseña");
+        } catch (Exception e) {
+            GenConf.ShowMessageBox("Error al generar la contraseña",this);
         }
     }
 
-    public void GetUserData(String Nombre,String apikey){
+    public void GetUserData(String Name, String apikey) {
         try {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-            final String NombreUsuario = Nombre;
+            final String UserName = Name;
             final String Apikey = apikey;
 
             AsyncHttpClient cliente = new AsyncHttpClient();
             cliente.setMaxRetriesAndTimeout(0, 10000);
 
             RequestParams parametros = new RequestParams();
-            parametros.put("cuenta", NombreUsuario);
+            parametros.put("account", UserName);
             parametros.put("apikey", Apikey);
 
-            cliente.get(this,GenConf.UserDataURL,parametros,new JsonHttpResponseHandler(){
+            cliente.get(this, GenConf.UserDataURL, parametros, new JsonHttpResponseHandler() {
                 @Override
                 public void onStart() {
-                    dialogo.show();
+                    mdialog.show();
                     super.onStart();
                 }
 
@@ -363,11 +360,11 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     try {
-                        dialogo.cancel();
+                        mdialog.cancel();
                         GetAllUserData(response.getJSONArray("data").getJSONObject(0));
                         StartMainActivity();
                     } catch (JSONException e) {
-                        MostrarAcceptDialog("Error al acceder a los datos de la cuenta.");
+                        GenConf.ShowMessageBox("Error al acceder a los datos de la cuenta.",loginactivity.this);
                         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                     }
                 }
@@ -375,25 +372,24 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    dialogo.cancel();
+                    mdialog.cancel();
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 }
 
                 @Override
                 public void onFinish() {
-                    dialogo.cancel();
+                    mdialog.cancel();
                     super.onFinish();
                 }
             });
 
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         }
     }
 
-    public void GetAllUserData(JSONObject data) throws  JSONException{
+    public void GetAllUserData(JSONObject data) throws JSONException {
         Session.UserName = data.getString("Cuenta");
         Session.Name = data.getString("Nombre");
         Session.Email = data.getString("correo");
@@ -404,13 +400,13 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         Session.Pass = data.getString("Contrasena");
     }
 
-    public void StartMainActivity(){
-        Intent princ = new Intent(this,Principal.class);
+    public void StartMainActivity() {
+        Intent princ = new Intent(this, Principal.class);
         startActivity(princ);
         this.finish();
     }
 
-    public void MostrarAlertDialog(){
+    public void ShowRecPasDialog() {
         GenConf.ShowingRecPassDialog = true;
         LayoutInflater layoutInflater = LayoutInflater.from(loginactivity.this);
         View promptView = layoutInflater.inflate(R.layout.restpass_layout, null);
@@ -442,30 +438,4 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
-
-    public void MostrarAcceptDialog(String message){
-        try {
-            LayoutInflater layoutInflater = LayoutInflater.from(loginactivity.this);
-            View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(loginactivity.this);
-            alertDialogBuilder.setView(promptView);
-
-            TextView textView = (TextView) promptView.findViewById(R.id.textViewtext);
-            textView.setText(message);
-            // setup a dialog window
-            alertDialogBuilder.setCancelable(false)
-                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    });
-
-            // create an alert dialog
-            AlertDialog alert = alertDialogBuilder.create();
-            alert.show();
-        }
-        catch (Exception e){
-
-        }
-    }
-
 }

@@ -42,7 +42,9 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
     private Pattern pattern;
     private Matcher matcher;
     ProgressDialog dialogo;
+
     FloatingActionButton fab;
+    static boolean showingDialog = false;
     private static final String EMAIL_PATTERN =
             "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                     + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -80,7 +82,8 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
         txtFSur.setText(Session.FirstSur);
         txtSSur.setText(Session.SecondSur);
         txtEmail.setText(Session.Email);
-        txtFNac.setText(Session.FNac);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        txtFNac.setText(formatter.format(Date.valueOf(Session.FNac)));
         txtFNac.setOnClickListener(this);
         txtFNac.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -90,6 +93,14 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(showingDialog){
+            fechaDialog.show();
+        }
     }
 
     public void CloseActivity(){
@@ -116,6 +127,7 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
     }
 
     public void showdatedialog(){
+        showingDialog = true;
         final Calendar newCalendar = Calendar.getInstance();
         fechaDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -127,9 +139,11 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
                 else {
                     if(newCalendar.get(Calendar.YEAR) - newDate.get(Calendar.YEAR) >= 110)
                         MostrarAcceptDialog("Fecha indicada demasiado antigua. Máximo rango de diferencia: 110 años");
-                    else
-                        txtFNac.setText(sqlformatter.format(newDate.getTime()));
+                    else {
+                        txtFNac.setText(formatter.format(newDate.getTime()));
+                    }
                 }
+                showingDialog = false;
             }
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
         fechaDialog.show();
@@ -149,9 +163,8 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
     }
 
     public boolean CheckChanges(){
-
             return (!txtName.getText().toString().equals(Session.Name) || !txtFSur.getText().toString().equals(Session.FirstSur)
-                    || !txtSSur.getText().toString().equals(Session.SecondSur) || !txtFNac.getText().toString().equals(Session.FNac)
+                    || !txtSSur.getText().toString().equals(Session.SecondSur) || !txtFNac.getText().toString().equals(formatter.format(Date.valueOf(Session.FNac)))
                     || !txtEmail.getText().toString().equals(Session.Email));
     }
 
@@ -162,10 +175,14 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
             cliente.setMaxRetriesAndTimeout(0, 10000);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             RequestParams parametros = new RequestParams();
+            Calendar mcal = Calendar.getInstance();
+            mcal.set(Calendar.DAY_OF_MONTH,Integer.parseInt(txtFNac.getText().toString().split("/")[0]));
+            mcal.set(Calendar.MONTH,Integer.parseInt(txtFNac.getText().toString().split("/")[1]));
+            mcal.set(Calendar.YEAR,Integer.parseInt(txtFNac.getText().toString().split("/")[2]));
             parametros.put("account", Session.UserName);
             parametros.put("apikey", Session.Apikey);
             parametros.put("name", txtName.getText().toString());
-            parametros.put("date", txtFNac.getText().toString());
+            parametros.put("date", sqlformatter.format(mcal.getTime()));
             parametros.put("fsur", txtFSur.getText().toString());
             parametros.put("ssur", txtSSur.getText().toString());
             parametros.put("email", txtEmail.getText().toString());
@@ -222,7 +239,11 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
         Session.FirstSur = txtFSur.getText().toString();
         Session.SecondSur = txtSSur.getText().toString();
         Session.Email = txtEmail.getText().toString();
-        Session.FNac  = txtFNac.getText().toString();
+        Calendar mcal = Calendar.getInstance();
+        mcal.set(Calendar.DAY_OF_MONTH,Integer.parseInt(txtFNac.getText().toString().split("/")[0]));
+        mcal.set(Calendar.MONTH,Integer.parseInt(txtFNac.getText().toString().split("/")[1]));
+        mcal.set(Calendar.YEAR,Integer.parseInt(txtFNac.getText().toString().split("/")[2]));
+        Session.FNac  = sqlformatter.format(mcal.getTime());
     }
 
     @Override

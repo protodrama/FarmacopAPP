@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Introduce el nombre de cuenta:"
+        android:textSize="20dp"
         style="@style/TextViewFarmacopGreen"
         android:id="@+id/textView" />
 
@@ -19,6 +20,7 @@
         android:id="@+id/edittext"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:digits="abcdefghijklmnñopqrstuvwxyz._-ABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890 "
         android:hint="cuenta..."
         android:padding="10dp" />
 </LinearLayout>

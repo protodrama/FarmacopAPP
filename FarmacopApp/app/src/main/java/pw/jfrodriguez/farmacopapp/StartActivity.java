@@ -46,14 +46,14 @@ public class StartActivity extends AppCompatActivity {
 
     public void GetUserData(String Nombre,String apikey){
         try {
-            final String NombreUsuario = Nombre;
+            final String UserName = Nombre;
             final String Apikey = apikey;
 
             AsyncHttpClient cliente = new AsyncHttpClient();
             cliente.setMaxRetriesAndTimeout(0, 10000);
 
             RequestParams parametros = new RequestParams();
-            parametros.put("cuenta", NombreUsuario);
+            parametros.put("account", UserName);
             parametros.put("apikey", Apikey);
 
             cliente.get(this,GenConf.UserDataURL,parametros,new JsonHttpResponseHandler(){

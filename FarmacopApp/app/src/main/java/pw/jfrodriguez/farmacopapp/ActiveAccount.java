@@ -3,9 +3,8 @@ package pw.jfrodriguez.farmacopapp;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,7 +25,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class ActiveAccount extends AppCompatActivity implements View.OnClickListener{
 
-    ProgressDialog dialogo;
+    ProgressDialog mdialog;
     EditText txtName,txtPass,txtPass2;
 
     @Override
@@ -44,10 +43,10 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
         txtName = (EditText)findViewById(R.id.txtNameAct);
         txtPass = (EditText)findViewById(R.id.txtPassAct);
         txtPass2 = (EditText)findViewById(R.id.txtPassAct2);
-        dialogo = new ProgressDialog(this);
-        dialogo.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialogo.setMessage("Comprobando cuenta");
-        dialogo.setCancelable(false);
+        mdialog = new ProgressDialog(this);
+        mdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mdialog.setMessage("Comprobando cuenta");
+        mdialog.setCancelable(false);
     }
 
     public void CloseActivity(){
@@ -70,31 +69,33 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                 return true;
             }
             else{
-                MostrarAcceptDialog("Las contraseñas deben coincidir");
+                GenConf.ShowMessageBox("Las contraseñas deben coincidir",this);
                 return false;
             }
         }
         else{
-            MostrarAcceptDialog("Se deben rellenar todos los datos");
+            GenConf.ShowMessageBox("Se deben rellenar todos los datos",this);
             return false;
         }
     }
 
     public void CheckAccountName(){
         try {
-            final String NombreUsuario = txtName.getText().toString();
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+
+            final String UserName = txtName.getText().toString();
 
             AsyncHttpClient cliente = new AsyncHttpClient();
             cliente.setMaxRetriesAndTimeout(0, 10000);
 
             RequestParams parametros = new RequestParams();
-            parametros.put("cuenta", NombreUsuario);
+            parametros.put("account", UserName);
             parametros.put("apikey", GenConf.DEFAPIKEY);
 
             cliente.get(this,GenConf.ValidationURL,parametros,new JsonHttpResponseHandler(){
                 @Override
                 public void onStart() {
-                    dialogo.show();
+                    mdialog.show();
                     super.onStart();
                 }
 
@@ -102,10 +103,10 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     try {
-                        dialogo.cancel();
-                        CheckData(response.getJSONArray("data"),NombreUsuario);
+                        mdialog.cancel();
+                        CheckData(response.getJSONArray("data"),UserName);
                     } catch (JSONException e) {
-                        MostrarAcceptDialog("El nombre de cuenta no coincide con ninguna cuenta que no esté validada.");
+                        GenConf.ShowMessageBox("El nombre de cuenta no coincide con ninguna cuenta que no esté validada.",ActiveAccount.this);
                         Log.i("milog", e.getMessage());
                     }
                 }
@@ -113,13 +114,13 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    dialogo.cancel();
-                    MostrarAcceptDialog("Error al comprobar la cuenta. Compruebe su conexión.");
+                    mdialog.cancel();
+                    GenConf.ShowMessageBox("Error al comprobar la cuenta. Compruebe su conexión.",ActiveAccount.this);
                 }
 
                 @Override
                 public void onFinish() {
-                    dialogo.cancel();
+                    mdialog.cancel();
                     super.onFinish();
                 }
             });
@@ -127,7 +128,7 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
 
         }
         catch (Exception e){
-            MostrarAcceptDialog("Error al comprobar el usuario");
+            GenConf.ShowMessageBox("Error al comprobar el usuario",this);
         }
     }
 
@@ -136,27 +137,27 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
         if(username.equals(name))
             ActiveAccount();
         else
-            MostrarAcceptDialog("La cuenta indicada no es correcta");
+            GenConf.ShowMessageBox("La cuenta indicada no es correcta",this);
     }
 
     public void ActiveAccount(){
         try {
-            final String NombreUsuario = txtName.getText().toString();
+            final String UserName = txtName.getText().toString();
             final String Contrasena = GenConf.MD5(txtPass.getText().toString());
-            dialogo.setMessage("Activando cuenta");
+            mdialog.setMessage("Activando cuenta");
 
             AsyncHttpClient cliente = new AsyncHttpClient();
             cliente.setMaxRetriesAndTimeout(0, 10000);
 
             RequestParams parametros = new RequestParams();
-            parametros.put("cuenta", NombreUsuario);
-            parametros.put("contrasena", Contrasena);
+            parametros.put("account", UserName);
+            parametros.put("password", Contrasena);
             parametros.put("apikey", "eadmghacdg");
 
             cliente.put(this, GenConf.ValidateURL, parametros, new JsonHttpResponseHandler() {
                 @Override
                 public void onStart() {
-                    dialogo.show();
+                    mdialog.show();
                     super.onStart();
                 }
 
@@ -164,27 +165,28 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     try {
-                        dialogo.cancel();
+                        mdialog.cancel();
                         int status = response.getInt("status");
                         if(status == 200)
                             ShowDialog();
                         else
                             throw new JSONException("");
                     } catch (JSONException e) {
-                        MostrarAcceptDialog("Error al activar cuenta.");
+                        GenConf.ShowMessageBox("Error al activar cuenta.",ActiveAccount.this);
                     }
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    dialogo.cancel();
-                    MostrarAcceptDialog("Error al activar cuenta. Compruebe su conexión.");
+                    mdialog.cancel();
+                    GenConf.ShowMessageBox("Error al activar cuenta. Compruebe su conexión.",ActiveAccount.this);
                 }
 
                 @Override
                 public void onFinish() {
-                    dialogo.cancel();
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                    mdialog.cancel();
                     super.onFinish();
                 }
             });
@@ -192,7 +194,7 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
 
         }
         catch (Exception e){
-            MostrarAcceptDialog("Error al activar cuenta.");
+            GenConf.ShowMessageBox("Error al activar cuenta.",this);
         }
     }
 
@@ -210,26 +212,6 @@ public class ActiveAccount extends AppCompatActivity implements View.OnClickList
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         CloseActivity();
-                    }
-                });
-
-        // create an alert dialog
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
-    }
-
-    public void MostrarAcceptDialog(String message){
-        LayoutInflater layoutInflater = LayoutInflater.from(ActiveAccount.this);
-        View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ActiveAccount.this);
-        alertDialogBuilder.setView(promptView);
-
-        final TextView editText = (TextView) promptView.findViewById(R.id.textViewtext);
-        editText.setText(message);
-        // setup a dialog window
-        alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
                     }
                 });
 

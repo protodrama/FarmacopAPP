@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -27,6 +28,7 @@ public class prescriptions_activity extends AppCompatActivity {
 
     ProgressDialog mdialog;
     RecyclerView mRecyclerView;
+    TextView empty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class prescriptions_activity extends AppCompatActivity {
         mdialog.setCancelable(false);
 
         mRecyclerView = (RecyclerView)findViewById(R.id.mrecycler);
+        empty = (TextView)findViewById(R.id.textEmpty);
 
         GetAllPrescriptions();
     }
@@ -133,6 +136,12 @@ public class prescriptions_activity extends AppCompatActivity {
         }));
 
         mdialog.cancel();
+
+        if(prescriptionsList.size() == 0)
+            empty.setVisibility(View.VISIBLE);
+        else
+            empty.setVisibility(View.INVISIBLE);
+
     }
 
     public void StartSeePrescription(prescription theprescription){

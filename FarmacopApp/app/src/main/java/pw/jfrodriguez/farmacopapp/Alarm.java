@@ -7,38 +7,26 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
-
-import cz.msebera.android.httpclient.Header;
 
 public class Alarm extends AppCompatActivity implements View.OnClickListener{
 
     MediaPlayer mp;
     String UserName,Hour,Minute,Apikey,Date;
     ArrayList<String> Data;
-    ProgressDialog dialogo;
+    ProgressDialog mdialog;
     static Boolean closed = false;
 
     @Override
@@ -79,10 +67,10 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
             }
         }
 
-        dialogo = new ProgressDialog(this);
-        dialogo.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialogo.setMessage("Reportando toma...");
-        dialogo.setCancelable(false);
+        mdialog = new ProgressDialog(this);
+        mdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mdialog.setMessage("Reportando toma...");
+        mdialog.setCancelable(false);
     }
 
     @Override
@@ -160,13 +148,13 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
             cliente.put(this, GenConf.UpdateControlsURL, parametros, new JsonHttpResponseHandler() {
                 @Override
                 public void onStart() {
-                    dialogo.show();
+                    mdialog.show();
                     super.onStart();
                 }
 
                 @Override
                 public void onFinish() {
-                    dialogo.cancel();
+                    mdialog.cancel();
                     super.onFinish();
                     closed = true;
                     CloseActivity();

@@ -1,16 +1,12 @@
 package pw.jfrodriguez.farmacopapp;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -27,9 +23,8 @@ import cz.msebera.android.httpclient.Header;
 
 public class ModPass extends AppCompatActivity implements View.OnClickListener{
 
-    ProgressDialog dialogo;
+    ProgressDialog mdialog;
     EditText txtOriginal,txtNewPass,txtNewPass2;
-    boolean showMessageBoxUpdatedTrue = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +39,10 @@ public class ModPass extends AppCompatActivity implements View.OnClickListener{
             }
         });
 
-        dialogo = new ProgressDialog(this);
-        dialogo.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialogo.setMessage("Realizando operación");
-        dialogo.setCancelable(false);
+        mdialog = new ProgressDialog(this);
+        mdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mdialog.setMessage("Realizando operación");
+        mdialog.setCancelable(false);
 
         txtOriginal = (EditText)findViewById(R.id.txtOriginalPass);
         txtNewPass = (EditText)findViewById(R.id.txtNewPass);
@@ -70,26 +65,26 @@ public class ModPass extends AppCompatActivity implements View.OnClickListener{
                                 try {
                                     UpdatePassWord();
                                 } catch (Exception e) {
-                                    MostrarAcceptDialog("Error al actualizar la contraseña");
+                                    GenConf.ShowMessageBox("Error al actualizar la contraseña", this);
                                 }
                             }
                             else {
-                                MostrarAcceptDialog("La nueva contraseña no puede ser igual que la antigua");
+                                GenConf.ShowMessageBox("La nueva contraseña no puede ser igual que la antigua",this);
                             }
                         }
                         else {
-                            MostrarAcceptDialog("La nueva contraseña no coincide");
+                            GenConf.ShowMessageBox("La nueva contraseña no coincide",this);
                         }
                     } else {
-                        MostrarAcceptDialog("La contraseña original no coincide con la actual");
+                        GenConf.ShowMessageBox("La contraseña original no coincide con la actual",this);
                     }
                 }
                 catch (Exception e){
-                    MostrarAcceptDialog("Error al comprobar la contraseña original");
+                    GenConf.ShowMessageBox("Error al comprobar la contraseña original",this);
                 }
             }
             else
-                MostrarAcceptDialog("Debes rellenar todos los campos");
+                GenConf.ShowMessageBox("Debes rellenar todos los campos",this);
         }
     }
 
@@ -124,7 +119,7 @@ public class ModPass extends AppCompatActivity implements View.OnClickListener{
         cliente.put(this, GenConf.UpdatePasswordURL, parametros, new JsonHttpResponseHandler() {
             @Override
             public void onStart() {
-                dialogo.show();
+                mdialog.show();
                 super.onStart();
             }
 
@@ -132,7 +127,7 @@ public class ModPass extends AppCompatActivity implements View.OnClickListener{
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 try {
-                    dialogo.cancel();
+                    mdialog.cancel();
                     int status = response.getInt("status");
                     if(status == 200) {
                         Toast.makeText(ModPass.this,"Contraseña actualizada con éxito",Toast.LENGTH_LONG).show();
@@ -142,7 +137,7 @@ public class ModPass extends AppCompatActivity implements View.OnClickListener{
                     else
                         throw new JSONException("");
                 } catch (JSONException e) {
-                    MostrarAcceptDialog("Error al actualizar la contraseña");
+                    GenConf.ShowMessageBox("Error al actualizar la contraseña",ModPass.this);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 }
             }
@@ -150,41 +145,17 @@ public class ModPass extends AppCompatActivity implements View.OnClickListener{
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                dialogo.cancel();
-                MostrarAcceptDialog("Error al actualizar la contraseña");
+                mdialog.cancel();
+                GenConf.ShowMessageBox("Error al actualizar la contraseña",ModPass.this);
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
             }
 
             @Override
             public void onFinish() {
-                dialogo.cancel();
+                mdialog.cancel();
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 super.onFinish();
             }
         });
-    }
-
-    public void MostrarAcceptDialog(String message){
-        try {
-            LayoutInflater layoutInflater = LayoutInflater.from(this);
-            View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setView(promptView);
-
-            TextView textView = (TextView) promptView.findViewById(R.id.textViewtext);
-            textView.setText(message);
-            // setup a dialog window
-            alertDialogBuilder.setCancelable(false)
-                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    });
-
-            // create an alert dialog
-            AlertDialog alert = alertDialogBuilder.create();
-            alert.show();
-        }
-        catch (Exception e){
-
-        }
     }
 }

@@ -1,15 +1,13 @@
 package pw.jfrodriguez.farmacopapp;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -24,7 +22,7 @@ public class NewMessage extends AppCompatActivity implements View.OnClickListene
 
     static String TargetUser = "FarmacopAT";
     EditText txtSubject,txtMessage;
-    ProgressDialog dialogo;
+    ProgressDialog mdialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +46,10 @@ public class NewMessage extends AppCompatActivity implements View.OnClickListene
 
         txtSubject = (EditText)findViewById(R.id.txtSubject);
         txtMessage = (EditText)findViewById(R.id.txtmessage);
-        dialogo = new ProgressDialog(this);
-        dialogo.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialogo.setMessage("Enviando mensaje");
-        dialogo.setCancelable(false);
+        mdialog = new ProgressDialog(this);
+        mdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mdialog.setMessage("Enviando mensaje");
+        mdialog.setCancelable(false);
     }
 
     public void CloseActivity(){
@@ -67,7 +65,7 @@ public class NewMessage extends AppCompatActivity implements View.OnClickListene
             SendMessage(subject,message);
         }
         else{
-            MostrarAcceptDialog("Debes rellenar todos los campos");
+            GenConf.ShowMessageBox("Debes rellenar todos los campos",this);
         }
     }
 
@@ -78,7 +76,7 @@ public class NewMessage extends AppCompatActivity implements View.OnClickListene
 
             AsyncHttpClient cliente = new AsyncHttpClient();
             cliente.setMaxRetriesAndTimeout(0, 10000);
-
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             RequestParams parametros = new RequestParams();
             parametros.put("account", Username);
             parametros.put("apikey", Apikey);
@@ -86,61 +84,40 @@ public class NewMessage extends AppCompatActivity implements View.OnClickListene
             parametros.put("subject", subject);
             parametros.put("message", message);
 
-            cliente.post(this,GenConf.AddMessageURL,parametros,new JsonHttpResponseHandler(){
+            cliente.post(this, GenConf.AddMessageURL, parametros, new JsonHttpResponseHandler() {
                 @Override
                 public void onStart() {
-                    dialogo.show();
+                    mdialog.show();
                     super.onStart();
                 }
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
-                        dialogo.cancel();
+                    mdialog.cancel();
+                    CloseActivity();
+                    Toast.makeText(NewMessage.this,"Mensaje enviado con éxito",Toast.LENGTH_LONG).show();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    dialogo.cancel();
+                    mdialog.cancel();
+                    Toast.makeText(NewMessage.this,"Error al enviar el mensaje",Toast.LENGTH_LONG).show();
                 }
 
                 @Override
                 public void onFinish() {
-                    dialogo.cancel();
+                    mdialog.cancel();
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                     super.onFinish();
-                    CloseActivity();
+
                 }
             });
 
 
         }
         catch (Exception e){}
-    }
-
-    public void MostrarAcceptDialog(String message){
-        try {
-            LayoutInflater layoutInflater = LayoutInflater.from(this);
-            View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setView(promptView);
-
-            TextView textView = (TextView) promptView.findViewById(R.id.textViewtext);
-            textView.setText(message);
-            // setup a dialog window
-            alertDialogBuilder.setCancelable(false)
-                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    });
-
-            // create an alert dialog
-            AlertDialog alert = alertDialogBuilder.create();
-            alert.show();
-        }
-        catch (Exception e){
-
-        }
     }
 
 }

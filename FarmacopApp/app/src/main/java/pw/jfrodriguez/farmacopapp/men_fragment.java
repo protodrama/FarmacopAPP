@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class men_fragment extends Fragment {
 
     RecyclerView miLista;
+    TextView empty;
     public ArrayList<Message> ListToShow;
     public Context contexto;
     MenAdapter myadapter;
@@ -37,7 +39,12 @@ public class men_fragment extends Fragment {
             }
         });
 
-       miLista = (RecyclerView)layout.findViewById(R.id.mlista);
+       miLista = (RecyclerView)layout.findViewById(R.id.mlist);
+        empty = (TextView)layout.findViewById(R.id.textEmpty);
+        if(ListToShow.size() == 0)
+            empty.setVisibility(View.VISIBLE);
+        else
+            empty.setVisibility(View.INVISIBLE);
 
        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(contexto);
        miLista.setLayoutManager(mLayoutManager);

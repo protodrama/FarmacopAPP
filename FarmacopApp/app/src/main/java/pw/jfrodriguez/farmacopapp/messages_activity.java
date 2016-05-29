@@ -78,14 +78,14 @@ public class messages_activity extends AppCompatActivity {
             dialogo.setMessage("Actualizando mensajes");
             dialogo.setCancelable(false);
 
-            final String NombreUsuario = Session.UserName;
+            final String UserName = Session.UserName;
             final String Apikey = Session.Apikey;
 
             AsyncHttpClient cliente = new AsyncHttpClient();
             cliente.setMaxRetriesAndTimeout(0, 10000);
 
             RequestParams parametros = new RequestParams();
-            parametros.put("cuenta", NombreUsuario);
+            parametros.put("account", UserName);
             parametros.put("apikey", Apikey);
 
             cliente.get(this,GenConf.GetAllMessagesURL,parametros,new JsonHttpResponseHandler(){
