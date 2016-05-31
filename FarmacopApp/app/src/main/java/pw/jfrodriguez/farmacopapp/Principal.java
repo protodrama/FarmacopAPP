@@ -77,12 +77,8 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
             startActivity(i);
         }
         if (id == R.id.action_about) {
-            i = new Intent(this,About.class);
+            i = new Intent(this, About.class);
             startActivity(i);
-        }
-        if (id == R.id.action_contact) {
-            DialogFragment dialogo = new listDialogFragment();
-            dialogo.show(getFragmentManager(),"Contacto");
         }
         if(id == R.id.action_logout){
             Logout();
