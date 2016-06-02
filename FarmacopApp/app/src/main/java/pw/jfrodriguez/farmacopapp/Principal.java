@@ -1,6 +1,10 @@
 package pw.jfrodriguez.farmacopapp;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,9 +13,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 public class Principal extends AppCompatActivity implements listDialogFragment.NoticeDialogListener,View.OnClickListener {
 
@@ -81,14 +87,14 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
             startActivity(i);
         }
         if(id == R.id.action_logout){
-            Logout();
+            AskBeforeLogout();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     public void Logout(){
-        SharedPreferences Preferences = getApplicationContext().getSharedPreferences(GenConf.SAVEDSESION,0);
+        SharedPreferences Preferences = getApplicationContext().getSharedPreferences(GenConf.SAVEDSESION, 0);
         SharedPreferences.Editor mEditor = Preferences.edit();
         mEditor.putString(GenConf.ACCOUNT,null);
         mEditor.putString(GenConf.APIKEY, null);
@@ -123,7 +129,7 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.exit:
-                Logout();
+                AskBeforeLogout();
                 break;
             case R.id.showRecepies:
                 Intent r = new Intent(this,prescriptions_activity.class);
@@ -143,6 +149,39 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
                 break;
             default:
                 break;
+        }
+    }
+
+    public void AskBeforeLogout(){
+        try {
+            LayoutInflater layoutInflater = LayoutInflater.from(this);
+            View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setView(promptView);
+
+            TextView textView = (TextView) promptView.findViewById(R.id.textViewtext);
+            textView.setText("¿Desea desconectar y salir a la pantalla de conexión?");
+            // setup a dialog window
+            alertDialogBuilder.setCancelable(false)
+                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Logout();
+                        }
+                    }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+
+
+            // create an alert dialog
+            AlertDialog alert = alertDialogBuilder.create();
+            alert.show();
+        }
+        catch (Exception e){
+
         }
     }
 }
