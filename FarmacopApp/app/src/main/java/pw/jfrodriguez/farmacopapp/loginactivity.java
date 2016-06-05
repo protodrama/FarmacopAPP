@@ -110,8 +110,10 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnEntrar:
-
-                CheckLogin(txtName.getText().toString(), txtPass.getText().toString());
+                if(!txtName.getText().toString().trim().equals("") && !txtPass.getText().toString().trim().equals(""))
+                    CheckLogin(txtName.getText().toString(), txtPass.getText().toString());
+                else
+                    GenConf.ShowMessageBox("Debes indicar usuario y contraseña para entrar",this);
                 break;
             case R.id.activeAccount:
                 Intent acc = new Intent(this, ActiveAccount.class);
