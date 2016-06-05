@@ -21,8 +21,6 @@
     <string name="title_activity_principal">Página principal</string>
     <string name="title_activity_active_account">Activar cuenta</string>
     <string name="title_activity_profile">Perfil personal</string>
-    <string name="title_activity_recetas">recetas</string>
-    <string name="title_activity_mensajes">mensajes</string>
     <string name="title_activity_alarm">HORA DE TOMA</string>
     <string name="title_activity_messages">Mensajes</string>
     <string name="title_activity_see_message">Mensaje</string>
@@ -30,6 +28,6 @@
     <string name="title_activity_modify_profile">Modificar perfil</string>
     <string name="title_activity_control_time">Horario de tratamiento</string>
     <string name="title_activity_mod_pass">Modificar contraseña</string>
-    <string name="title_activity_prescriptions">Recetas</string>
+    <string name="title_activity_prescriptions">Recetas activas</string>
     <string name="title_activity_see_prescription">Datos de receta</string>
 </resources>
