@@ -77,20 +77,16 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         Intent i = null;
-
-        if(id == R.id.user_profile){
-            i = new Intent(this,Profile.class);
-            startActivity(i);
-        }
         if (id == R.id.action_about) {
             i = new Intent(this, About.class);
             startActivity(i);
         }
-        if(id == R.id.action_logout){
-            AskBeforeLogout();
-        }
+        if (id == R.id.action_contact) {
+            DialogFragment dialogo = new listDialogFragment();
+            dialogo.show(getFragmentManager(), "Contacto");
 
-        return super.onOptionsItemSelected(item);
+        }
+            return super.onOptionsItemSelected(item);
     }
 
     public void Logout(){

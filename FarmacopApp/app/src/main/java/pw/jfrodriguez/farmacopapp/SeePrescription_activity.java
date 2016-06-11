@@ -16,6 +16,9 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
@@ -23,9 +26,10 @@ import cz.msebera.android.httpclient.Header;
 public class SeePrescription_activity extends AppCompatActivity {
 
     prescription ThePrescription;
-    TextView txtMedic,txtAmmount;
+    TextView txtMed, txtFStart, txtFend,txtAmmount,txtMedic;
     ProgressDialog mdialog;
     ListView timeList;
+    SimpleDateFormat formatter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +49,22 @@ public class SeePrescription_activity extends AppCompatActivity {
 
         mdialog = new ProgressDialog(this);
         mdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mdialog.setMessage("Obteniendo recetas");
+        mdialog.setMessage("Obteniendo datos de la receta");
         mdialog.setCancelable(false);
+        formatter = new SimpleDateFormat("dd/MM/yyyy");
 
         ThePrescription = (prescription)getIntent().getExtras().get("presc");
         if(ThePrescription != null) {
-            txtMedic = (TextView) findViewById(R.id.txtMedicam);
-            txtMedic.setText(ThePrescription.medicament);
+            txtMed = (TextView) findViewById(R.id.txtMedicam);
+            txtMed.setText(ThePrescription.medicament);
             txtAmmount = (TextView)findViewById(R.id.txtDs);
             txtAmmount.setText("" + ThePrescription.ammount);
+            txtFStart = (TextView)findViewById(R.id.txtFStart);
+            txtFStart.setText(formatter.format(Date.valueOf(ThePrescription.startDate)));
+            txtFend = (TextView)findViewById(R.id.txtFEnd);
+            txtFend.setText(formatter.format(Date.valueOf(ThePrescription.endDate)));
+            txtMedic = (TextView)findViewById(R.id.txtMedic);
+            txtMedic.setText(ThePrescription.medic);
             timeList = (ListView) findViewById(R.id.mlist);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override

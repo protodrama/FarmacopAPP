@@ -15,7 +15,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal">
 
@@ -28,7 +28,36 @@
 
             <TextView
                 style="@style/TextViewFarmacopGreen"
-                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:layout_gravity="left"
+                android:text="Médico:" />
+
+            <TextView
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:id="@+id/txtMedic"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="25dp"
+                android:ems="10"
+                android:textColor="@android:color/black"
+                android:layout_gravity="center_horizontal" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="4dp" >
+
+            <TextView
+                style="@style/TextViewFarmacopGreen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="25dp"
@@ -40,6 +69,7 @@
                 android:layout_width="match_parent"
                 android:id="@+id/txtMedicam"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:textSize="25dp"
                 android:ems="10"
                 android:textColor="@android:color/black"
@@ -50,28 +80,94 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/TextViewFarmacopGreen"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25dp"
-                android:layout_gravity="left"
-                android:text="Dosis (mg):" />
-
-            <TextView
-                style="@style/EditTextStyle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtDs"
-                android:textSize="25dp"
-                android:ems="10"
-                android:textColor="@android:color/black"
-                android:layout_gravity="center_horizontal" />
-        </LinearLayout>
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="4dp">
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/TextViewFarmacopGreen"
+                        android:textSize="25dp"
+                        android:layout_gravity="left"
+                        android:text="Inicio:" />
+
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/TextViewFarmacopGreen"
+                        android:textSize="25dp"
+                        android:layout_gravity="left"
+                        android:layout_marginRight="2dp"
+                        android:text="Fin:" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:id="@+id/txtFStart"
+                        android:layout_height="wrap_content"
+                        style="@style/EditTextStyle"
+                        android:textSize="25dp"
+                        android:ems="10"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="center_horizontal" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtFEnd"
+                        style="@style/EditTextStyle"
+                        android:textSize="25dp"
+                        android:ems="10"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="center_horizontal" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextViewFarmacopGreen"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="25dp"
+                    android:layout_gravity="left"
+                    android:text="Dosis (mg):" />
+
+                <TextView
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtDs"
+                    android:textSize="25dp"
+                    android:ems="10"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center_horizontal" />
+            </LinearLayout>
 
         <TextView
             style="@style/TextViewFarmacopGreen"

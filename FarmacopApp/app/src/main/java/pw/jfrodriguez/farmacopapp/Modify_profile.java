@@ -82,7 +82,6 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
         txtFSur.setText(Session.FirstSur);
         txtSSur.setText(Session.SecondSur);
         txtEmail.setText(Session.Email);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         txtFNac.setText(formatter.format(Date.valueOf(Session.FNac)));
         txtFNac.setOnClickListener(this);
         txtFNac.setOnFocusChangeListener(new View.OnFocusChangeListener() {
