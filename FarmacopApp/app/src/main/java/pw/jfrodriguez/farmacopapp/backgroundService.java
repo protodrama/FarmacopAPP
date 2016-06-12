@@ -45,6 +45,8 @@ public class backgroundService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Started = true;
 
+        //Lanza dos hilos que acceden al servidor de base de datos
+
         Log.i("milog","servicio activo");
         new Thread(){
             @Override
@@ -62,7 +64,7 @@ public class backgroundService extends Service {
                 StartListeningControl();
             }
         }.start();
-        return START_STICKY;
+        return START_STICKY; //Este valor devuelto se usa para que el servicio se reinicie siempre que muera
     }
 
     @Override
@@ -75,6 +77,7 @@ public class backgroundService extends Service {
         return null;
     }
 
+    //Lee los mensajes de la base de datos cada 30 segs
     public void StartListeningMessages(){
         Log.i("milog", "escuchando");
         while(true) {
@@ -87,29 +90,32 @@ public class backgroundService extends Service {
         }
     }
 
+    //Obtiene los datos de la cuenta para realizar las operaciones si la conexión a internet está habilitada
     public void RetrieveSesionData(boolean isMSGListener){
         Log.i("milog", "extrayendo datos de cuenta");
-        SharedPreferences Preferences = getApplicationContext().getSharedPreferences(GenConf.SAVEDSESION,0);
-        String account = Preferences.getString(GenConf.ACCOUNT, null);
-        String apikey = Preferences.getString(GenConf.APIKEY,null);
+        if(GenConf.isNetworkAvailable(this)) {
+            SharedPreferences Preferences = getApplicationContext().getSharedPreferences(GenConf.SAVEDSESION, 0);
+            String account = Preferences.getString(GenConf.ACCOUNT, null);
+            String apikey = Preferences.getString(GenConf.APIKEY, null);
 
-        if(account != null && apikey != null) {
-            if(!UserName.equals(account)){
-                SettedHour = -1;
-                SettedMinute = -1;
+            if (account != null && apikey != null) {
+                if (!UserName.equals(account)) {
+                    SettedHour = -1;
+                    SettedMinute = -1;
+                }
+                UserName = account;
+                if (isMSGListener)
+                    GetNotReadedMessages(account, apikey);
+                else
+                    GetControlToday(account, apikey);
+            } else {
+                if (myAlarmManager != null && pendingIntent != null)
+                    myAlarmManager.cancel(pendingIntent);
             }
-            UserName = account;
-            if(isMSGListener)
-                GetNotReadedMessages(account,apikey);
-            else
-                GetControlToday(account,apikey);
-        }
-        else{
-            if(myAlarmManager != null && pendingIntent != null)
-                myAlarmManager.cancel(pendingIntent);
         }
     }
 
+    //Obtiene los mensajes recibidos sin leer
     private void GetNotReadedMessages(String Account, String Apikey) {
         try {
             Log.i("milog", "obteniendo mensajes");
@@ -149,6 +155,7 @@ public class backgroundService extends Service {
         }
     }
 
+    //Comprueba los mensajes recibidos sin leer para notificar al usuario.
     public void CheckMessages(JSONArray ListMensajes){
         Log.i("milog", "chequeando mensajes");
         boolean showmessage = false;
@@ -176,6 +183,7 @@ public class backgroundService extends Service {
         }
     }
 
+    //Muestra notificación
     public void showMessage(int num){
         Log.i("milog", "notificacion!");
         try {
@@ -204,6 +212,7 @@ public class backgroundService extends Service {
         }
     }
 
+    //Escucha los mensajes de la base de datos
     public void StartListeningControl(){
         while(true) {
             try {
@@ -216,6 +225,7 @@ public class backgroundService extends Service {
         }
     }
 
+    //Obtiene las tomas a realizar para el día de hoy
     public void GetControlToday(String Account, String Apikey){
         try {
             Log.i("milog", "obteniendo control");
@@ -256,6 +266,7 @@ public class backgroundService extends Service {
         }
     }
 
+    //Programa el activity de alarma
     public void ProgramAlarm(JSONArray Control){
         Log.i("milog", " control");
         ArrayList<String> Data = new ArrayList<>();
@@ -325,6 +336,7 @@ public class backgroundService extends Service {
         }
     }
 
+    //Filtra las tomas a realizar
     public ArrayList<JSONObject> GetControlToday(JSONArray Control) throws JSONException{
         Log.i("milog", "filtrando fechas control");
         ArrayList<JSONObject> Data = new ArrayList();

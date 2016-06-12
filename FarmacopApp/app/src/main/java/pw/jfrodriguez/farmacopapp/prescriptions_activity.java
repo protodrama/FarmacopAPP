@@ -1,6 +1,8 @@
 package pw.jfrodriguez.farmacopapp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -51,7 +54,10 @@ public class prescriptions_activity extends AppCompatActivity {
         mRecyclerView = (RecyclerView)findViewById(R.id.mrecycler);
         empty = (TextView)findViewById(R.id.textEmpty);
 
-        GetAllPrescriptions();
+        if(GenConf.isNetworkAvailable(this))
+            GetAllPrescriptions();
+        else
+            ShowDialogAndClose("Error. Compruebe su conexión a internet.");
     }
 
     public void CloseActivity()
@@ -59,6 +65,7 @@ public class prescriptions_activity extends AppCompatActivity {
         finish();
     }
 
+    //Obtiene la lista de recetas activas para el usuario
     public void GetAllPrescriptions(){
         try {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
@@ -89,6 +96,13 @@ public class prescriptions_activity extends AppCompatActivity {
                 }
 
                 @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    mdialog.cancel();
+                    ShowDialogAndClose("Error al conectar con el servidor. Inténtelo de nuevo o compruebe su conexión a internet.");
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                }
+
+                @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     mdialog.cancel();
@@ -109,6 +123,7 @@ public class prescriptions_activity extends AppCompatActivity {
         }
     }
 
+    //Obtiene los datos de la lista recibida
     public void SetAdapter(JSONArray listPrescriptions) throws JSONException {
 
         ArrayList<prescription> prescriptionsList = new ArrayList<>();
@@ -144,9 +159,33 @@ public class prescriptions_activity extends AppCompatActivity {
 
     }
 
+    //Lanza el activity para ver los datos de la receta
     public void StartSeePrescription(prescription theprescription){
         Intent i = new Intent(this,SeePrescription_activity.class);
-        i.putExtra("presc",theprescription);
+        i.putExtra("presc", theprescription);
         startActivity(i);
+    }
+
+    //Muestra un diálogo y cierra el activity
+    public void ShowDialogAndClose(String message){
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View promptView = layoutInflater.inflate(R.layout.txtviewdialog_layout, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptView);
+
+        final TextView editText = (TextView) promptView.findViewById(R.id.textData);
+        editText.setText(message);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                        CloseActivity();
+                    }
+                });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 }

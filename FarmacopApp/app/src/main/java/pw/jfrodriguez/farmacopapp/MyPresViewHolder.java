@@ -10,6 +10,9 @@ import android.widget.TextView;
  */
 
 public class MyPresViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+    //Contenedor de las recetas en el RecyclerView del activity prescriptions_activity
+
     public IPresAdapterOnClick mListener;
     public TextView textMed;
     public LinearLayout container;
@@ -29,7 +32,7 @@ public class MyPresViewHolder extends RecyclerView.ViewHolder implements View.On
         mListener.onItemClick(ThePrescription);
     }
 
-
+    //Interfaz que captura la pulsación sobre la receta
     public interface IPresAdapterOnClick {
         void onItemClick(prescription item);
     }

@@ -13,7 +13,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 
 
-public class Profile extends AppCompatActivity {
+public class Profile_activity extends AppCompatActivity {
 
     TextView txtUserName,txtName,txtFSur,txtSSur,txtFNac,txtEmail;
 
@@ -38,6 +38,7 @@ public class Profile extends AppCompatActivity {
         txtEmail = (TextView)findViewById(R.id.txtEmail);
     }
 
+    //Recarga los datos de la sesión conectada
     @Override
     protected void onResume() {
         super.onResume();
@@ -61,6 +62,7 @@ public class Profile extends AppCompatActivity {
         return true;
     }
 
+    //Opciones del menú
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -71,7 +73,7 @@ public class Profile extends AppCompatActivity {
             startActivity(i);
         }
         if(id == R.id.action_pass){
-            i = new Intent(this,ModPass.class);
+            i = new Intent(this,ModPass_activity.class);
             startActivity(i);
         }
 

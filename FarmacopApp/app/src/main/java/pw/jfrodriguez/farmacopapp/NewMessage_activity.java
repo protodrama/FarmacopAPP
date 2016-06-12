@@ -18,8 +18,9 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class NewMessage extends AppCompatActivity implements View.OnClickListener{
+public class NewMessage_activity extends AppCompatActivity implements View.OnClickListener{
 
+    //Nombre del usuario a mandar el mensaje por defecto
     static String TargetUser = "FarmacopAT";
     EditText txtSubject,txtMessage;
     ProgressDialog mdialog;
@@ -58,17 +59,22 @@ public class NewMessage extends AppCompatActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-
+        //Comprueba el contenido de los texto y envía el mensaje
         if(!txtSubject.getText().toString().trim().equals("") && !txtMessage.getText().toString().trim().equals("")){
-            String subject = txtSubject.getText().toString();
-            String message = txtMessage.getText().toString().replace("\n\r","[**]");
-            SendMessage(subject,message);
+            if(GenConf.isNetworkAvailable(this)) {
+                String subject = txtSubject.getText().toString();
+                String message = txtMessage.getText().toString().replace("\n\r", "[**]");
+                SendMessage(subject, message);
+            }
+            else
+                GenConf.ShowMessageBox("Error. Compruebe su conexión a internet", this);
         }
         else{
             GenConf.ShowMessageBox("Debes rellenar todos los campos",this);
         }
     }
 
+    //Envía un mensaje interno siempre que la conexión de red esté habilitada
     public void SendMessage(String subject, String message){
         try {
             final String Username = Session.UserName;
@@ -96,14 +102,21 @@ public class NewMessage extends AppCompatActivity implements View.OnClickListene
                     super.onSuccess(statusCode, headers, response);
                     mdialog.cancel();
                     CloseActivity();
-                    Toast.makeText(NewMessage.this,"Mensaje enviado con éxito",Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewMessage_activity.this,"Mensaje enviado con éxito",Toast.LENGTH_LONG).show();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     mdialog.cancel();
-                    Toast.makeText(NewMessage.this,"Error al enviar el mensaje",Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewMessage_activity.this,"Error al enviar el mensaje",Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    mdialog.cancel();
+                    GenConf.ShowMessageBox("Error al conectar con el servidor. Inténtelo de nuevo o compruebe su conexión a internet.", NewMessage_activity.this);
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
                 }
 
                 @Override

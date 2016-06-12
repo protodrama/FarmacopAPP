@@ -1,13 +1,10 @@
 package pw.jfrodriguez.farmacopapp;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,7 +12,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-public class SeeMessage extends AppCompatActivity {
+public class SeeMessage_activity extends AppCompatActivity {
 
     Message TheMessage;
     TextView Writer,Reader,Subject,message;
@@ -39,7 +36,7 @@ public class SeeMessage extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent newmessage = new Intent(SeeMessage.this,NewMessage.class);
+                Intent newmessage = new Intent(SeeMessage_activity.this,NewMessage_activity.class);
                 newmessage.putExtra("answerto",TheMessage.Writer);
                 startActivity(newmessage);
             }
@@ -67,9 +64,12 @@ public class SeeMessage extends AppCompatActivity {
             message = (TextView)findViewById(R.id.txtmessage);
             message.setText(TheMessage.Message);
 
-            if(NeedUpdate)
-                UpdateMessageToRead();
-        }catch (Exception e)
+            if(NeedUpdate) {
+                if(GenConf.isNetworkAvailable(this))
+                    UpdateMessageToRead();
+            }
+        }
+        catch (Exception e)
         {
             NeedUpdate = false;
             GenConf.ShowMessageBox("Error inesperado al cargar la información del mensaje",this);
@@ -88,6 +88,7 @@ public class SeeMessage extends AppCompatActivity {
         CloseActivity();
     }
 
+    //Actualiza a leído un mensaje que no esté leído
     public void UpdateMessageToRead(){
             try {
                 AsyncHttpClient cliente = new AsyncHttpClient();

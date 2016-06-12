@@ -17,6 +17,8 @@ import java.util.Calendar;
  */
 public class cPageAdapter extends FragmentStatePagerAdapter {
 
+    //Esta clase se encarga de manejar las páginas que muestran las tomas a realizar
+
     int mNumOfTabs;
     Context contexto;
     ArrayList<Control> Today,Tomorrow;
@@ -28,6 +30,7 @@ public class cPageAdapter extends FragmentStatePagerAdapter {
         CreateLists(listControl);
     }
 
+    //Divide la lista de tomas entre hoy y mañana
     public void CreateLists(ArrayList<Control> controlList){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Calendar myDate = Calendar.getInstance();

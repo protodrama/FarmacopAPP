@@ -12,6 +12,8 @@ import java.util.ArrayList;
 
 public class Session {
 
+    //Clase que contiene la información del usuario conectado a la aplicación cuando está abierta.
+
     static String UserName;
     static String Email;
     static String Name;

@@ -10,7 +10,7 @@
     android:paddingTop="10dp"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="pw.jfrodriguez.farmacopapp.Profile"
+    tools:context=".Profile_activity"
     tools:showIn="@layout/activity_profile">
 
     <ScrollView

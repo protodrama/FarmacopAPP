@@ -1,21 +1,15 @@
 package pw.jfrodriguez.farmacopapp;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -41,7 +35,7 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
     DatePickerDialog fechaDialog;
     private Pattern pattern;
     private Matcher matcher;
-    ProgressDialog dialogo;
+    ProgressDialog mdialog;
 
     FloatingActionButton fab;
     static boolean showingDialog = false;
@@ -73,10 +67,10 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
         formatter = new SimpleDateFormat("dd/MM/yyyy");
         sqlformatter = new SimpleDateFormat("yyyy-MM-dd");
         pattern = Pattern.compile(EMAIL_PATTERN);
-        dialogo = new ProgressDialog(this);
-        dialogo.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialogo.setMessage("Actualizando datos");
-        dialogo.setCancelable(false);
+        mdialog = new ProgressDialog(this);
+        mdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mdialog.setMessage("Actualizando datos");
+        mdialog.setCancelable(false);
 
         txtName.setText(Session.Name);
         txtFSur.setText(Session.FirstSur);
@@ -106,25 +100,30 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
         finish();
     }
 
+    //Realiza las comprobaciones antes de actualizar los datos del usuario
     public void UpdateUserData(){
         if(CheckEditText()){
             if(Emailvalidate(txtEmail.getText().toString())){
                 if(CheckChanges())
                 {
-                    UpdateUserDBData();
+                    if(GenConf.isNetworkAvailable(this))
+                        UpdateUserDBData();
+                    else
+                        GenConf.ShowMessageBox("Error. Compruebe su conexión a internet.", this);
                 }
                 else
                     CloseActivity();
             }
             else{
-                MostrarAcceptDialog("El Email no está bien formado");
+                GenConf.ShowMessageBox("El Email no está bien formado", this);
             }
         }
         else{
-            MostrarAcceptDialog("Debes rellenar todos los campos");
+            GenConf.ShowMessageBox("Debes rellenar todos los campos",this);
         }
     }
 
+    //Muestra un diálogo de selección de fecha
     public void showdatedialog(){
         showingDialog = true;
         final Calendar newCalendar = Calendar.getInstance();
@@ -134,10 +133,10 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
                 newDate.set(year, monthOfYear, dayOfMonth);
 
                 if(newDate.getTime().after(newCalendar.getTime()))
-                    MostrarAcceptDialog("La fecha no puede ser mayor a la fecha actual");
+                    GenConf.ShowMessageBox("La fecha no puede ser mayor a la fecha actual",Modify_profile.this);
                 else {
                     if(newCalendar.get(Calendar.YEAR) - newDate.get(Calendar.YEAR) >= 110)
-                        MostrarAcceptDialog("Fecha indicada demasiado antigua. Máximo rango de diferencia: 110 años");
+                        GenConf.ShowMessageBox("Fecha indicada demasiado antigua. Máximo rango de diferencia: 110 años",Modify_profile.this);
                     else {
                         txtFNac.setText(formatter.format(newDate.getTime()));
                     }
@@ -148,12 +147,14 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
         fechaDialog.show();
     }
 
+    //Comprueba que todos los datos han sido introducidos
     public boolean CheckEditText(){
         return (!txtName.getText().toString().trim().equals("") && !txtFSur.getText().toString().trim().equals("")
                 && !txtSSur.getText().toString().trim().equals("") && !txtFNac.getText().toString().trim().equals("")
                 && !txtEmail.getText().toString().trim().equals(""));
     }
 
+    //Comprueba el formato del email
     public boolean Emailvalidate(String email) {
 
         matcher = pattern.matcher(email);
@@ -161,12 +162,14 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    //Comprueba si hay cambios a realizar
     public boolean CheckChanges(){
             return (!txtName.getText().toString().equals(Session.Name) || !txtFSur.getText().toString().equals(Session.FirstSur)
                     || !txtSSur.getText().toString().equals(Session.SecondSur) || !txtFNac.getText().toString().equals(formatter.format(Date.valueOf(Session.FNac)))
                     || !txtEmail.getText().toString().equals(Session.Email));
     }
 
+    //Actualiza los datos del usuario en la base de datos
     public void UpdateUserDBData(){
         try {
 
@@ -189,7 +192,7 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
             cliente.put(this, GenConf.UpdateUserURL, parametros, new JsonHttpResponseHandler() {
                 @Override
                 public void onStart() {
-                    dialogo.show();
+                    mdialog.show();
                     super.onStart();
                 }
 
@@ -197,7 +200,7 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     try {
-                        dialogo.cancel();
+                        mdialog.cancel();
                         int status = response.getInt("status");
                         if(status == 200) {
                             UpdateSessionData();
@@ -207,21 +210,28 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
                         else
                             throw new JSONException("");
                     } catch (JSONException e) {
-                        MostrarAcceptDialog("Error al actualizar.");
+                        GenConf.ShowMessageBox("Error al actualizar.", Modify_profile.this);
                     }
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    dialogo.cancel();
-                    MostrarAcceptDialog("Error al actualizar. Compruebe su conexión.");
+                    mdialog.cancel();
+                    GenConf.ShowMessageBox("Error al actualizar. Compruebe su conexión.", Modify_profile.this);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    mdialog.cancel();
+                    GenConf.ShowMessageBox("Error al conectar con el servidor. Inténtelo de nuevo o compruebe su conexión a internet.",Modify_profile.this);
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
                 }
 
                 @Override
                 public void onFinish() {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-                    dialogo.cancel();
+                    mdialog.cancel();
                     super.onFinish();
                 }
             });
@@ -229,10 +239,11 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
 
         }
         catch (Exception e){
-            MostrarAcceptDialog("Error al actualizar.");
+            GenConf.ShowMessageBox("Error al actualizar.", this);
         }
     }
 
+    //Cambia los datos del usuario en la aplicación
     public void UpdateSessionData(){
         Session.Name = txtName.getText().toString();
         Session.FirstSur = txtFSur.getText().toString();
@@ -254,31 +265,6 @@ public class Modify_profile extends AppCompatActivity implements View.OnClickLis
             case R.id.fab:
                 UpdateUserData();
                 break;
-        }
-    }
-
-    public void MostrarAcceptDialog(String message){
-        try {
-            LayoutInflater layoutInflater = LayoutInflater.from(this);
-            View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setView(promptView);
-
-            TextView textView = (TextView) promptView.findViewById(R.id.textViewtext);
-            textView.setText(message);
-            // setup a dialog window
-            alertDialogBuilder.setCancelable(false)
-                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    });
-
-            // create an alert dialog
-            AlertDialog alert = alertDialogBuilder.create();
-            alert.show();
-        }
-        catch (Exception e){
-
         }
     }
 }

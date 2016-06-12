@@ -13,6 +13,9 @@ import java.util.List;
  */
 public class CtrlAdapter extends RecyclerView.Adapter<MyCtlrViewHolder> {
 
+    //Esta clase se encarga de asignar los valores de los controles
+    //a los diferentes campos del layout en el que se muestra
+
     private List<Control> data;
 
     public CtrlAdapter(ArrayList<Control> data)     {

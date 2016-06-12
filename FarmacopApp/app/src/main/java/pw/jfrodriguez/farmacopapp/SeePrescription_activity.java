@@ -1,12 +1,16 @@
 package pw.jfrodriguez.farmacopapp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -69,12 +73,15 @@ public class SeePrescription_activity extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent newmessage = new Intent(SeePrescription_activity.this,NewMessage.class);
-                    newmessage.putExtra("answerto",ThePrescription.medic);
+                    Intent newmessage = new Intent(SeePrescription_activity.this, NewMessage_activity.class);
+                    newmessage.putExtra("answerto", ThePrescription.medic);
                     startActivity(newmessage);
                 }
             });
-            GetTimeFromPrescription();
+            if(GenConf.isNetworkAvailable(this))
+                GetTimeFromPrescription();
+            else
+                ShowDialogAndClose("Error. Compruebe su conexión a internet.");
         }
     }
 
@@ -114,6 +121,13 @@ public class SeePrescription_activity extends AppCompatActivity {
                 }
 
                 @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    mdialog.cancel();
+                    ShowDialogAndClose("Error al conectar con el servidor. Inténtelo de nuevo o compruebe su conexión a internet.");
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                }
+
+                @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     mdialog.cancel();
@@ -144,6 +158,29 @@ public class SeePrescription_activity extends AppCompatActivity {
 
         timeList.setAdapter(new mAdapter(this,R.layout.controltext,Timetable,this.getLayoutInflater()));
 
+    }
+
+    //Muestra un diálogo y cierra el activity
+    public void ShowDialogAndClose(String message){
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View promptView = layoutInflater.inflate(R.layout.txtviewdialog_layout, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptView);
+
+        final TextView editText = (TextView) promptView.findViewById(R.id.textData);
+        editText.setText(message);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                        CloseActivity();
+                    }
+                });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 
 }

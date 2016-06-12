@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -47,17 +48,17 @@
             android:parentActivityName=".loginactivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Principal"
+            android:name=".Principal_activity"
             android:label="@string/title_activity_principal"
             android:parentActivityName=".StartActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ActiveAccount"
+            android:name=".ActiveAccount_activity"
             android:label="@string/title_activity_active_account"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Profile"
+            android:name=".Profile_activity"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -80,12 +81,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SeeMessage"
+            android:name=".SeeMessage_activity"
             android:label="@string/title_activity_see_message"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".NewMessage"
+            android:name=".NewMessage_activity"
             android:label="@string/title_activity_new_message"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -98,7 +99,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ModPass"
+            android:name=".ModPass_activity"
             android:label="@string/title_activity_mod_pass"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

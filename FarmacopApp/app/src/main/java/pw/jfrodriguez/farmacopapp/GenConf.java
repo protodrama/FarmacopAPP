@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -16,6 +18,8 @@ import java.security.NoSuchAlgorithmException;
  * Created by Juanfran on 02/05/2016.
  */
 public class GenConf {
+
+    //Esta clase contiene datos que son accedidos por múltiples elementos de la aplicación
 
     public static final String DEFAPIKEY = "eadmghacdg";
     public static final String LogURL = "https://jfrodriguez.pw/slimrest/api/Login";
@@ -46,6 +50,7 @@ public class GenConf {
 
     public static String MessageFromRecPassDialog = "";
 
+    //Convierte la cadena recibida a su firma hash
     public static String MD5(String cadena) throws NoSuchAlgorithmException {
 
         MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
@@ -63,6 +68,7 @@ public class GenConf {
         return "" + MD5Hash;
     }
 
+    //Muestra un mensaje de texto en un cuadro
     public static void ShowMessageBox(String message,Context contexto){
         try {
             LayoutInflater layoutInflater = LayoutInflater.from(contexto);
@@ -86,6 +92,14 @@ public class GenConf {
         catch (Exception e){
 
         }
+    }
+
+    //Comprueba si hay conexión a internet
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

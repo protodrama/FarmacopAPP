@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -71,6 +72,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    //Guarda los datos de la cuenta al conectarse
     public void SaveUserAccount(String User, String Apikey) {
         SharedPreferences Preferences = getApplicationContext().getSharedPreferences(GenConf.SAVEDSESION, 0);
         SharedPreferences.Editor mEditor = Preferences.edit();
@@ -111,12 +113,16 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.btnEntrar:
                 if(!txtName.getText().toString().trim().equals("") && !txtPass.getText().toString().trim().equals(""))
-                    CheckLogin(txtName.getText().toString(), txtPass.getText().toString());
+                    if(GenConf.isNetworkAvailable(this)) {
+                        CheckLogin(txtName.getText().toString(), txtPass.getText().toString());
+                    }
+                    else
+                        GenConf.ShowMessageBox("Error. Compruebe su conexión a internet.",this);
                 else
                     GenConf.ShowMessageBox("Debes indicar usuario y contraseña para entrar",this);
                 break;
             case R.id.activeAccount:
-                Intent acc = new Intent(this, ActiveAccount.class);
+                Intent acc = new Intent(this, ActiveAccount_activity.class);
                 startActivity(acc);
                 break;
             case R.id.restartPass:
@@ -127,6 +133,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    //Se guarda el mensaje del cuadro de texto de recuperación de contraseña si se está mostrando
     @Override
     protected void onStop() {
         if (GenConf.ShowingRecPassDialog)
@@ -134,15 +141,18 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         super.onStop();
     }
 
+    //Recupera el valor del texto del cuadro de recuperar contraseña si se estaba mostrando
     @Override
     protected void onRestart() {
         super.onRestart();
     }
 
+    //Controla la selección del diálogo de contacto
     @Override
     public void onDialogUserSelect(DialogFragment dialog, int which) {
         switch (which) {
             case 0:
+                //Muestra el selector de las aplicaciones de correo
                 String email = getResources().getString(R.string.correo);
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                         "mailto", email, null));
@@ -151,6 +161,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 startActivity(Intent.createChooser(emailIntent, "Enviar email a " + email));
                 break;
             case 1:
+                //Abre la ventana de llamada del dispositivo
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 String telf = getResources().getString(R.string.telefono);
                 intent.setData(Uri.parse("tel:" + telf));
@@ -159,6 +170,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    //Obtiene los datos de las credenciales de la cuenta indicada
     public void CheckLogin(String Name, String Password) {
         try {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
@@ -184,11 +196,23 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                     super.onSuccess(statusCode, headers, response);
                     try {
                         mdialog.cancel();
-                        ComprobarCredenciales(response.getJSONArray("data"), UserName, Pass);
+                        if(GenConf.isNetworkAvailable(loginactivity.this)) {
+                            CheckCredentials(response.getJSONArray("data"), UserName, Pass);
+                        }
+                        else{
+                            ShowDialogAndClose("Error. Compruebe su conexión a internet.");
+                        }
                     } catch (JSONException e) {
                         GenConf.ShowMessageBox("Error al acceder a los datos de las credenciales",loginactivity.this);
                         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                     }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    mdialog.cancel();
+                    GenConf.ShowMessageBox("Error al conectar con el servidor. Inténtelo de nuevo o compruebe su conexión a internet.",loginactivity.this);
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
                 }
 
                 @Override
@@ -205,12 +229,18 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void ComprobarCredenciales(JSONArray User, String Name, String Password) throws JSONException {
+    //Comprueba las credenciales introducidas
+    public void CheckCredentials(JSONArray User, String Name, String Password) throws JSONException {
         if (User.length() > 0) {
             JSONObject datos = User.getJSONObject(0);
             if (datos.getString("Cuenta").equals(Name) && datos.getString("Contrasena").equals(Password)) {
-                SaveUserAccount(Name, datos.getString("APIKEY"));
-                GetUserData(Name, datos.getString("APIKEY"));
+                if(GenConf.isNetworkAvailable(this)) {
+                    SaveUserAccount(Name, datos.getString("APIKEY"));
+                    GetUserData(Name, datos.getString("APIKEY"));
+                }
+                else{
+                    GenConf.ShowMessageBox("Error. Compruebe su conexión a internet.",this);
+                }
                 return;
             }
         }
@@ -218,6 +248,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 
+    //Recibe la cuenta para recuperar la contraseña
     public void CheckAccountToRestPassAndSend(String name) {
         try {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
@@ -255,8 +286,15 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     mdialog.cancel();
-                    GenConf.ShowMessageBox("Error al comprobar la cuentas",loginactivity.this);
+                    GenConf.ShowMessageBox("Error al comprobar la cuentas", loginactivity.this);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    mdialog.cancel();
+                    GenConf.ShowMessageBox("Error al conectar con el servidor. Inténtelo de nuevo o compruebe su conexión a internet.", loginactivity.this);
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
                 }
 
                 @Override
@@ -273,14 +311,19 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    //Comprueba que la cuenta coincide con una que existe
     public void CheckData(JSONArray data, String name) throws JSONException {
         String username = data.getJSONObject(0).getString("Cuenta");
         if (username.equals(name))
-            RestPassAndSend(name);
+            if(GenConf.isNetworkAvailable(this))
+                RestPassAndSend(name);
+            else
+                GenConf.ShowMessageBox("Error. Compruebe su conexión a internet.",this);
         else
             GenConf.ShowMessageBox("La cuenta indicada no es correcta",this);
     }
 
+    //Genera y envia la contraseña nueva al usuario
     public void RestPassAndSend(String name) {
         try {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
@@ -324,6 +367,13 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 }
 
                 @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    mdialog.cancel();
+                    GenConf.ShowMessageBox("Error al conectar con el servidor. Inténtelo de nuevo o compruebe su conexión a internet.", loginactivity.this);
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                }
+
+                @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
                     mdialog.cancel();
@@ -338,6 +388,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    //Obtiene los datos del usuario
     public void GetUserData(String Name, String apikey) {
         try {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
@@ -379,6 +430,13 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                 }
 
                 @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    mdialog.cancel();
+                    GenConf.ShowMessageBox("Error al conectar con el servidor. Inténtelo de nuevo o compruebe su conexión a internet.", loginactivity.this);
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                }
+
+                @Override
                 public void onFinish() {
                     mdialog.cancel();
                     super.onFinish();
@@ -391,6 +449,7 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    //Lee los datos del usuario recibidos
     public void GetAllUserData(JSONObject data) throws JSONException {
         Session.UserName = data.getString("Cuenta");
         Session.Name = data.getString("Nombre");
@@ -402,12 +461,14 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
         Session.Pass = data.getString("Contrasena");
     }
 
+    //Abre el menú principal una vez se conecte con éxito
     public void StartMainActivity() {
-        Intent princ = new Intent(this, Principal.class);
+        Intent princ = new Intent(this, Principal_activity.class);
         startActivity(princ);
         this.finish();
     }
 
+    //Muestra el diálogo para recuperar la contraseña
     public void ShowRecPasDialog() {
         GenConf.ShowingRecPassDialog = true;
         LayoutInflater layoutInflater = LayoutInflater.from(loginactivity.this);
@@ -424,7 +485,13 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                         //COMPROBAR Y MANDAR CORREO CON LA NUEVA CONTRASEÑA
                         GenConf.ShowingRecPassDialog = false;
                         GenConf.MessageFromRecPassDialog = "";
-                        CheckAccountToRestPassAndSend(messageBoxText.getText().toString());
+                        if(!messageBoxText.getText().toString().trim().equals(""))
+                            if(GenConf.isNetworkAvailable(loginactivity.this))
+                                CheckAccountToRestPassAndSend(messageBoxText.getText().toString());
+                            else
+                                GenConf.ShowMessageBox("Error. Compruebe su conexión a internet.",loginactivity.this);
+                        else
+                            GenConf.ShowMessageBox("Debes introducir un nombre de cuenta",loginactivity.this);
                     }
                 })
                 .setNegativeButton("Cancelar",
@@ -435,6 +502,29 @@ public class loginactivity extends AppCompatActivity implements View.OnClickList
                                 dialog.cancel();
                             }
                         });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    //Muestra un diálogo y cierra el activity
+    public void ShowDialogAndClose(String message){
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View promptView = layoutInflater.inflate(R.layout.txtviewdialog_layout, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptView);
+
+        final TextView editText = (TextView) promptView.findViewById(R.id.textData);
+        editText.setText(message);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                        CloseActivity();
+                    }
+                });
 
         // create an alert dialog
         AlertDialog alert = alertDialogBuilder.create();

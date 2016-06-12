@@ -15,6 +15,9 @@ import java.util.List;
  */
 public class MenAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
+    //Esta clase es el contenedor del layout que muestra los datos de los mensajes
+    //en los recyclerview de los fragment de messages_activity.
+
     private List<Message> data;
     IAdapterOnClick mListener;
 
@@ -52,6 +55,7 @@ public class MenAdapter extends RecyclerView.Adapter<MyViewHolder> {
         return data.size();
     }
 
+    //Esta interfaz se utiliza para capturar la pulsación sobre el mensaje
     public interface IAdapterOnClick {
         void onClickListener(Message message);
     }

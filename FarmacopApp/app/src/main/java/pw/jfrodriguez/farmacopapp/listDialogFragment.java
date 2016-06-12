@@ -12,13 +12,15 @@ import android.os.Bundle;
  */
 public class listDialogFragment extends DialogFragment {
 
+    //Este diálogo es el que muestra la lista de contacto al pulsar
+    //sobre la opción "contáctanos" en el menú de las activities.
+
     AlertDialog.Builder constructor;
 
     //definimos como va a ser el dialogo en el método (onCreateDialog)
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        //super.onCreate(savedInstanceState);
-        //usamos un objeto Builder para definir el dialogo
+
         constructor = new AlertDialog.Builder(getActivity());
         constructor.setTitle("Contáctanos");
         constructor.setItems(R.array.contact_array, new DialogInterface.OnClickListener() {

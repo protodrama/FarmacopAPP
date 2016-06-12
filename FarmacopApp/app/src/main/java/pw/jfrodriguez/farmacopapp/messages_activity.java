@@ -3,6 +3,7 @@ package pw.jfrodriguez.farmacopapp;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -28,7 +29,7 @@ public class messages_activity extends AppCompatActivity {
 
     mPagerAdapter adapter;
     ViewPager viewPager;
-    ProgressDialog dialogo;
+    ProgressDialog mdialog;
     TabLayout tabLayout;
     public static Integer TabShowing = 0;
 
@@ -52,7 +53,7 @@ public class messages_activity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
-
+        GenConf.OpenedToSeeMessages = false;
     }
 
     public void CloseActivity(){
@@ -67,16 +68,20 @@ public class messages_activity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        GetMessages();
+        if(GenConf.isNetworkAvailable(this))
+            GetMessages();
+        else
+            ShowDialogAndClose("Error. Compruebe su conexión a internet.");
         super.onResume();
     }
 
+    //Obtiene los mensajes de la base de datos
     public void GetMessages(){
         try {
-            dialogo = new ProgressDialog(this);
-            dialogo.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            dialogo.setMessage("Actualizando mensajes");
-            dialogo.setCancelable(false);
+            mdialog = new ProgressDialog(this);
+            mdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mdialog.setMessage("Actualizando mensajes");
+            mdialog.setCancelable(false);
 
             final String UserName = Session.UserName;
             final String Apikey = Session.Apikey;
@@ -91,7 +96,7 @@ public class messages_activity extends AppCompatActivity {
             cliente.get(this,GenConf.GetAllMessagesURL,parametros,new JsonHttpResponseHandler(){
                 @Override
                 public void onStart() {
-                    dialogo.show();
+                    mdialog.show();
                     super.onStart();
                 }
 
@@ -101,8 +106,8 @@ public class messages_activity extends AppCompatActivity {
                     try {
                         ShowLists(response.getJSONArray("data"));
                     } catch (JSONException e) {
-                        dialogo.cancel();
-                        MostrarAcceptDialog("Error al acceder a los datos de la cuenta.");
+                        mdialog.cancel();
+                        GenConf.ShowMessageBox("Error al acceder a los datos de la cuenta.", messages_activity.this);
                         CloseActivity();
                     }
                 }
@@ -110,14 +115,21 @@ public class messages_activity extends AppCompatActivity {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    dialogo.cancel();
-                    MostrarAcceptDialog("Error al acceder a los datos de la cuenta.");
+                    mdialog.cancel();
+                    GenConf.ShowMessageBox("Error al acceder a los datos de la cuenta.", messages_activity.this);
                     CloseActivity();
                 }
 
                 @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    mdialog.cancel();
+                    ShowDialogAndClose("Error al conectar con el servidor. Inténtelo de nuevo o compruebe su conexión a internet.");
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                }
+
+                @Override
                 public void onFinish() {
-                    dialogo.cancel();
+                    mdialog.cancel();
                     super.onFinish();
                 }
             });
@@ -129,6 +141,7 @@ public class messages_activity extends AppCompatActivity {
         }
     }
 
+    //Muestra el layout con tabulaciones
     public void ShowLists(JSONArray MessageList) throws JSONException{
         ArrayList<Message> messageList = ReadMessages(MessageList);
 
@@ -152,9 +165,10 @@ public class messages_activity extends AppCompatActivity {
             }
         });
         viewPager.setCurrentItem(TabShowing);
-        dialogo.cancel();
+        mdialog.cancel();
     }
 
+    //Filtra los mensajes que se reciben desde el servidor
     public ArrayList<Message> ReadMessages(JSONArray MessageList) throws JSONException {
 
         ArrayList<Message> messageList =  new ArrayList<>();
@@ -175,28 +189,26 @@ public class messages_activity extends AppCompatActivity {
 
     }
 
-    public void MostrarAcceptDialog(String message){
-        try {
-            LayoutInflater layoutInflater = LayoutInflater.from(messages_activity.this);
-            View promptView = layoutInflater.inflate(R.layout.messagebox_layout, null);
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(messages_activity.this);
-            alertDialogBuilder.setView(promptView);
+    //Muestra un diálogo y cierra el activity
+    public void ShowDialogAndClose(String message){
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View promptView = layoutInflater.inflate(R.layout.txtviewdialog_layout, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptView);
 
-            TextView textView = (TextView) promptView.findViewById(R.id.textViewtext);
-            textView.setText(message);
-            // setup a dialog window
-            alertDialogBuilder.setCancelable(false)
-                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    });
+        final TextView editText = (TextView) promptView.findViewById(R.id.textData);
+        editText.setText(message);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                        CloseActivity();
+                    }
+                });
 
-            // create an alert dialog
-            AlertDialog alert = alertDialogBuilder.create();
-            alert.show();
-        }
-        catch (Exception e){
-
-        }
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 }

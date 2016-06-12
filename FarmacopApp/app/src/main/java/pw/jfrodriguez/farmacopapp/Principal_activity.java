@@ -2,8 +2,6 @@ package pw.jfrodriguez.farmacopapp;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,7 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class Principal extends AppCompatActivity implements listDialogFragment.NoticeDialogListener,View.OnClickListener {
+public class Principal_activity extends AppCompatActivity implements listDialogFragment.NoticeDialogListener,View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +55,9 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
         }
     }
 
+    //Abre el activity de mensajes si se abre la aplicación desde la notificación
     public void OpenNewMessageActivity(){
-        Intent r = new Intent(this,NewMessage.class);
+        Intent r = new Intent(this,NewMessage_activity.class);
         startActivity(r);
     }
 
@@ -89,6 +88,7 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
             return super.onOptionsItemSelected(item);
     }
 
+    //Borra el usuario de la sesión y vuelve a la pantalla de login
     public void Logout(){
         SharedPreferences Preferences = getApplicationContext().getSharedPreferences(GenConf.SAVEDSESION, 0);
         SharedPreferences.Editor mEditor = Preferences.edit();
@@ -101,6 +101,7 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
         this.finish();
     }
 
+    //Diálogo de contacto
     @Override
     public void onDialogUserSelect(DialogFragment dialog, int which) {
         switch (which){
@@ -121,6 +122,7 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
         }
     }
 
+    //Controla cada una de las opciones del menú principal
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -140,7 +142,7 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
                 startActivity(m);
                 break;
             case R.id.showprofile:
-                Intent i = new Intent(this,Profile.class);
+                Intent i = new Intent(this,Profile_activity.class);
                 startActivity(i);
                 break;
             default:
@@ -148,6 +150,7 @@ public class Principal extends AppCompatActivity implements listDialogFragment.N
         }
     }
 
+    //Pregunta antes de desconectar
     public void AskBeforeLogout(){
         try {
             LayoutInflater layoutInflater = LayoutInflater.from(this);

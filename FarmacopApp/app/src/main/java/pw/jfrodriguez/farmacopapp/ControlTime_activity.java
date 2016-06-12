@@ -1,13 +1,18 @@
 package pw.jfrodriguez.farmacopapp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -24,6 +29,9 @@ import java.util.Calendar;
 import cz.msebera.android.httpclient.Header;
 
 public class ControlTime_activity extends AppCompatActivity {
+
+    //Esta activity muestra las tomas a realizar por el usuario
+    //Las tomas mostradas son las que quedan por realizar hoy y las de mañana
 
     cPageAdapter adapter;
     ViewPager viewPager;
@@ -50,7 +58,10 @@ public class ControlTime_activity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         try {
-            GetControl();
+            if(GenConf.isNetworkAvailable(this))
+                GetControl();
+            else
+                ShowDialogAndClose("Error. Compruebe su conexión a internet.");
         }
         catch (Exception e){
 
@@ -61,6 +72,7 @@ public class ControlTime_activity extends AppCompatActivity {
         this.finish();
     }
 
+    //Prepara el layout de tabulaciones
     public void ShowLists(JSONArray data) throws JSONException {
         ArrayList<Control> controlList = GetControlTodayAndTomorrow(data);
 
@@ -87,11 +99,12 @@ public class ControlTime_activity extends AppCompatActivity {
         mdialog.cancel();
     }
 
+    //Obtiene las tomas de la base de datos
     public void GetControl() throws JSONException{
         try {
         mdialog = new ProgressDialog(this);
         mdialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mdialog.setMessage("Actualizando mensajes");
+        mdialog.setMessage("Obteniendo tratamientos");
         mdialog.setCancelable(false);
 
         final String UserName = Session.UserName;
@@ -132,6 +145,13 @@ public class ControlTime_activity extends AppCompatActivity {
             }
 
             @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                mdialog.cancel();
+                ShowDialogAndClose("Error al conectar con el servidor. Inténtelo de nuevo o compruebe su conexión a internet.");
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
             public void onFinish() {
                 mdialog.cancel();
                 super.onFinish();
@@ -147,6 +167,7 @@ public class ControlTime_activity extends AppCompatActivity {
     }
     }
 
+    //Filtra las tomas de hoy y mañana
     public ArrayList<Control> GetControlTodayAndTomorrow(JSONArray Controls) throws JSONException{
         Log.i("milog", "filtrando fechas control");
         ArrayList<Control> Data = new ArrayList();
@@ -185,5 +206,28 @@ public class ControlTime_activity extends AppCompatActivity {
             Log.i("milog", e.getMessage());
         }
         return Data;
+    }
+
+    //Muestra un diálogo y cierra el activity
+    public void ShowDialogAndClose(String message){
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View promptView = layoutInflater.inflate(R.layout.txtviewdialog_layout, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptView);
+
+        final TextView editText = (TextView) promptView.findViewById(R.id.textData);
+        editText.setText(message);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                        CloseActivity();
+                    }
+                });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 }

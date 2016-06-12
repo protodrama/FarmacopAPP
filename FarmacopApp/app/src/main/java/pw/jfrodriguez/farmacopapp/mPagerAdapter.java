@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 public class mPagerAdapter extends FragmentStatePagerAdapter {
 
+    //Esta clase representa el contenedor de las páginas de tabulación del activity "messages_activity"
     int mNumOfTabs;
     Context contexto;
     ArrayList<Message> Readed,News,Sended;
@@ -23,6 +24,7 @@ public class mPagerAdapter extends FragmentStatePagerAdapter {
         CreateLists(messageList);
     }
 
+    //Crea las listas de mensajes a mostrar en cada una de las páginas
     public void CreateLists(ArrayList<Message> messageList){
 
         Readed = new ArrayList<>();

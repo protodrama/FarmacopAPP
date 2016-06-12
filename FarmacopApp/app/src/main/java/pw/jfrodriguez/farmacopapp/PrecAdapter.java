@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class PrecAdapter extends RecyclerView.Adapter<MyPresViewHolder> {
 
+    //Adapter de la lista de recetas para el recycler view del activity prescriptions_activity
+
     private List<prescription> data;
     IPresAdapterOnClick mListener;
 

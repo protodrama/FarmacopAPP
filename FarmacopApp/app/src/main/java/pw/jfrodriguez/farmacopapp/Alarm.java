@@ -53,6 +53,7 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
                 mListView.setAdapter(new mAdapter(this, R.layout.controltext, Data, this.getLayoutInflater()));
 
             try {
+                //Programa la reproducción del sonido a máximo volumen independientemente del volumen del dispositivo
                 Uri uri = Uri.parse("android.resource://pw.jfrodriguez.farmacopapp/" + R.raw.alarm_sound);
                 AudioManager mAudioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
                 mp = new MediaPlayer();
@@ -81,6 +82,7 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
+    //Este método permitirá al activity mostrarse incluso cuando la pantalla esté bloqueada
     @Override
     public void onAttachedToWindow() {
         Window window = getWindow();
@@ -90,6 +92,7 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
                 | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
     }
 
+    //Obtiene los datos de la sesión a la que hace referencia para evitar lanzarla si el usuario está desconectado.
     public boolean RetrieveSesionData(){
         Log.i("milog", "extrayendo datos de cuenta");
         SharedPreferences Preferences = getApplicationContext().getSharedPreferences(GenConf.SAVEDSESION,0);
@@ -114,6 +117,7 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
         finish();
     }
 
+    //se evita que se cierre la pantalla pulsando el botón back del dispositivo
     @Override
     public void onBackPressed() {
         //nothing
@@ -130,9 +134,16 @@ public class Alarm extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View v) {
         mp.stop();
 
-        UpdateAllControl();
+        if(GenConf.isNetworkAvailable(this))
+            UpdateAllControl();
+        else
+        {
+            closed = true;
+            CloseActivity();
+        }
     }
 
+    //Actualiza las tomas de los medicamentos en la base de datos y las pone a verdadero
     public void UpdateAllControl(){
         try {
             AsyncHttpClient cliente = new AsyncHttpClient();

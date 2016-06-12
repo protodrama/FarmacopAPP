@@ -21,7 +21,7 @@ import java.security.NoSuchAlgorithmException;
 
 import cz.msebera.android.httpclient.Header;
 
-public class ModPass extends AppCompatActivity implements View.OnClickListener{
+public class ModPass_activity extends AppCompatActivity implements View.OnClickListener{
 
     ProgressDialog mdialog;
     EditText txtOriginal,txtNewPass,txtNewPass2;
@@ -53,7 +53,7 @@ public class ModPass extends AppCompatActivity implements View.OnClickListener{
         this.finish();
     }
 
-
+    //Realiza todas las operaciones para actualizar la contraseña
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btnModify){
@@ -63,7 +63,10 @@ public class ModPass extends AppCompatActivity implements View.OnClickListener{
                         if(CheckNewPassWords()){
                             if(CheckNewWithOld()) {
                                 try {
-                                    UpdatePassWord();
+                                    if(GenConf.isNetworkAvailable(this))
+                                        UpdatePassWord();
+                                    else
+                                        GenConf.ShowMessageBox("Error. Compruebe su conexión a internet.", this);
                                 } catch (Exception e) {
                                     GenConf.ShowMessageBox("Error al actualizar la contraseña", this);
                                 }
@@ -88,22 +91,27 @@ public class ModPass extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
+    //Comprueba que todos los datos han sido introducidos
     public boolean CheckEditTexts(){
         return (!txtOriginal.getText().toString().trim().equals("") && !txtNewPass.getText().toString().trim().equals("") && !txtNewPass2.getText().toString().trim().equals(""));
     }
 
+    //Comprueba que la cuenta original y la indicada como original son iguales
     public boolean CheckOriginalPass() throws NoSuchAlgorithmException{
         return GenConf.MD5(txtOriginal.getText().toString()).equals(Session.Pass);
     }
 
+    //Comprueba que las nuevas contraseñas son iguales
     public boolean CheckNewPassWords(){
         return txtNewPass.getText().toString().equals(txtNewPass2.getText().toString());
     }
 
+    //Comprueba que la nueva contraseña es diferente a la antigua
     public boolean CheckNewWithOld(){
         return !txtOriginal.getText().toString().equals(txtNewPass.getText().toString());
     }
 
+    //Actualiza la contraseña de la cuenta
     public void UpdatePassWord() throws NoSuchAlgorithmException {
         final String NewPassword = GenConf.MD5(txtNewPass.getText().toString());
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
@@ -130,14 +138,14 @@ public class ModPass extends AppCompatActivity implements View.OnClickListener{
                     mdialog.cancel();
                     int status = response.getInt("status");
                     if(status == 200) {
-                        Toast.makeText(ModPass.this,"Contraseña actualizada con éxito",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ModPass_activity.this,"Contraseña actualizada con éxito",Toast.LENGTH_LONG).show();
                         Session.Pass = NewPassword;
                         CloseActivity();
                     }
                     else
                         throw new JSONException("");
                 } catch (JSONException e) {
-                    GenConf.ShowMessageBox("Error al actualizar la contraseña",ModPass.this);
+                    GenConf.ShowMessageBox("Error al actualizar la contraseña",ModPass_activity.this);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 }
             }
@@ -146,8 +154,15 @@ public class ModPass extends AppCompatActivity implements View.OnClickListener{
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 mdialog.cancel();
-                GenConf.ShowMessageBox("Error al actualizar la contraseña",ModPass.this);
+                GenConf.ShowMessageBox("Error al actualizar la contraseña",ModPass_activity.this);
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                mdialog.cancel();
+                GenConf.ShowMessageBox("Error al conectar con el servidor. Inténtelo de nuevo o compruebe su conexión a internet.",ModPass_activity.this);
+                super.onFailure(statusCode, headers, throwable, errorResponse);
             }
 
             @Override

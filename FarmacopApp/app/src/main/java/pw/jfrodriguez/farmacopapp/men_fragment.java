@@ -20,6 +20,8 @@ import java.util.ArrayList;
  */
 public class men_fragment extends Fragment {
 
+    //este fragment contiene la lista de mensajes que se muestran en el RecyclerView
+
     RecyclerView miLista;
     TextView empty;
     public ArrayList<Message> ListToShow;
@@ -55,7 +57,7 @@ public class men_fragment extends Fragment {
     }
 
     public void OpenToSeeMessage(Message message){
-        Intent in = new Intent(contexto,SeeMessage.class);
+        Intent in = new Intent(contexto,SeeMessage_activity.class);
         in.putExtra("message",message);
         startActivity(in);
     }

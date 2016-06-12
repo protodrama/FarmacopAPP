@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class mAdapter  extends ArrayAdapter<String> {
 
     //inflador para cada elemento de la lista (para darle un layout)
+    //Este adapter contendrá la lista de medicamentos a tomar en la alarma
     private LayoutInflater miInflater;
     public ViewHolder Container;
 

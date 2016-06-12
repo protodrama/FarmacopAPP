@@ -10,6 +10,12 @@ import android.util.Log;
  */
 public class mybroadcast extends WakefulBroadcastReceiver {
 
+    //Este broadcast se encarga de lanzar el servicio que lee los mensajes recibidos
+    //y las tomas a realizar cuando se enciende el dispositivo.
+
+    //También nos permite lanzar el servicio desde un activity
+    //cuando se abre la aplicación por primera vez
+
     public void onReceive(Context context, Intent intent)
     {
         if(!backgroundService.Started) {

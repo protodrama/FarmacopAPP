@@ -19,6 +19,9 @@ import java.util.ArrayList;
  */
 public class ctrl_fragment extends Fragment {
 
+    //Esta clase representa el contenedor dela layout de
+    //cada una de las páginas del activity "ControlTime_activity"
+
     RecyclerView miList;
     public ArrayList<Control> ListToShow;
     public Context contexto;
