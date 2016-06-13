@@ -53,7 +53,6 @@ public class messages_activity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
-        GenConf.OpenedToSeeMessages = false;
     }
 
     public void CloseActivity(){

@@ -23,6 +23,8 @@ import cz.msebera.android.httpclient.Header;
 
 public class StartActivity extends AppCompatActivity {
 
+    boolean opentoseemessages = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +33,7 @@ public class StartActivity extends AppCompatActivity {
         try{
             //Si recibe este extra significa que la aplicación ha sido abierta desde la notificación de mensajes
             extras.getString(GenConf.SeeMessages);
-            GenConf.OpenedToSeeMessages = true;
+            opentoseemessages = true;
         }
         catch (Exception e){}
         RetrieveSesionData();
@@ -51,7 +53,6 @@ public class StartActivity extends AppCompatActivity {
             GetUserData(account,apikey);
         }
         else {
-            GenConf.OpenedToSeeMessages = false;
             StartLoginActivity();
         }
     }
@@ -136,6 +137,8 @@ public class StartActivity extends AppCompatActivity {
     //Abre la actividad del menú principal
     public void StartMainActivity(){
         Intent princ = new Intent(this,Principal_activity.class);
+        if(opentoseemessages)
+            princ.putExtra("tomessages","");
         startActivity(princ);
         this.finish();
     }

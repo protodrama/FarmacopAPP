@@ -13,29 +13,37 @@
     tools:showIn="@layout/activity_alarm"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.7"
-        android:id="@+id/medlinear"
-        style="@style/EditTextStyle">
-
-        <ListView
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/mListView"
-            android:layout_gravity="center_horizontal" />
+            android:layout_height="match_parent">
 
-    </LinearLayout>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_weight="0.7"
+                    android:id="@+id/medlinear"
+                    style="@style/EditTextStyle">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:text="TOMADA"
-        style="@style/BtnFarmacopGreen"
-        android:id="@+id/btnEntrar"
-        android:layout_gravity="center_horizontal"
-        android:onClick="onClick"/>
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/mListView"
+                        android:layout_gravity="center_horizontal" />
+
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.1"
+                    android:text="TOMADA"
+                    style="@style/BtnFarmacopGreen"
+                    android:id="@+id/btnEntrar"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="onClick"/>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

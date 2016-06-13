@@ -189,7 +189,7 @@ public class backgroundService extends Service {
         try {
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.mipmap.ic_appicon)
+                            .setSmallIcon(R.drawable.iconapp)
                             .setContentTitle("Mensajes")
                             .setContentText("Tienes " + num + " mensajes sin leer.")
                             .setAutoCancel(true);

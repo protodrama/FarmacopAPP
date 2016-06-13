@@ -45,7 +45,6 @@ public class GenConf {
     public static final String APIKEY = "apikey";
     public static final String SeeMessages = "SeeMensages";
 
-    public static Boolean OpenedToSeeMessages = false;
     public static Boolean ShowingRecPassDialog = false;
 
     public static String MessageFromRecPassDialog = "";

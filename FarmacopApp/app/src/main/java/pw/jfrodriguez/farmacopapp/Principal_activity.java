@@ -47,12 +47,13 @@ public class Principal_activity extends AppCompatActivity implements listDialogF
         if(!backgroundService.Started){
             mybroadcast.StartServiceFromActivity(this);
         }
-        if(GenConf.OpenedToSeeMessages)
-        {
-            GenConf.OpenedToSeeMessages = false;
+
+        try{
+            this.getIntent().getExtras().get("tomessages");
             Intent messages = new Intent(this,messages_activity.class);
             startActivity(messages);
         }
+        catch (Exception ex){}
     }
 
     //Abre el activity de mensajes si se abre la aplicación desde la notificación
