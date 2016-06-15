@@ -296,7 +296,7 @@ public class backgroundService extends Service {
                         Calendar calendar = Calendar.getInstance();
                         calendar.set(calendar.HOUR_OF_DAY, Hour);
                         calendar.set(calendar.MINUTE, Minute);
-                        calendar.set(calendar.SECOND, 40);
+                        calendar.set(calendar.SECOND, 5);
                         Intent alarmAct = new Intent(this, Alarm.class);
                         alarmAct.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         alarmAct.putStringArrayListExtra("Data", Data);

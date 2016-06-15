@@ -131,7 +131,7 @@ public class ControlTime_activity extends AppCompatActivity {
                     ShowLists(response.getJSONArray("data"));
                 } catch (JSONException e) {
                     mdialog.cancel();
-                    GenConf.ShowMessageBox("Error al obtener los horarios de tomas.",ControlTime_activity.this);
+                    GenConf.ShowMessageBox("Error al obtener los horarios de tomas.", ControlTime_activity.this);
                     CloseActivity();
                 }
             }
@@ -140,7 +140,7 @@ public class ControlTime_activity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 mdialog.cancel();
-                GenConf.ShowMessageBox("Error al obtener los horarios de tomas.",ControlTime_activity.this);
+                GenConf.ShowMessageBox("Error al obtener los horarios de tomas.", ControlTime_activity.this);
                 CloseActivity();
             }
 
@@ -179,31 +179,34 @@ public class ControlTime_activity extends AppCompatActivity {
             String DateTomorrow = format.format(myDate.getTime());
             Log.i("milog", "fecha actual" + DateNow);
             for (int i = 0; i < Controls.length(); i++) {
-                String date = Controls.getJSONObject(i).getString("Fecha");
-                if (date.equals(DateNow) || date.equals(DateTomorrow)) {
-                    Control temp = new Control();
-                    temp.ammount = "" + Controls.getJSONObject(i).getInt("Dosis");
-                    temp.medicament = Controls.getJSONObject(i).getString("med");
-                    temp.date = date;
-                    temp.time = String.format("%02d",Controls.getJSONObject(i).getInt("Hora")) + ":" + String.format("%02d",Controls.getJSONObject(i).getInt("Minuto"));
-                    if(date.equals(DateNow)) {
-                        if (Controls.getJSONObject(i).getInt("Hora") >= myDate.get(Calendar.HOUR_OF_DAY)) {
-                            if (Controls.getJSONObject(i).getInt("Hora") > myDate.get(Calendar.HOUR_OF_DAY)) {
-                                Data.add(temp);
-                            } else {
-                                if (Controls.getJSONObject(i).getInt("Minuto") >= myDate.get(Calendar.MINUTE)) {
+                Integer done = Controls.getJSONObject(i).getInt("Tomada");
+                if(done == 0){
+                    String date = Controls.getJSONObject(i).getString("Fecha");
+                    if (date.equals(DateNow) || date.equals(DateTomorrow)) {
+                        Control temp = new Control();
+                        temp.ammount = "" + Controls.getJSONObject(i).getInt("Dosis");
+                        temp.medicament = Controls.getJSONObject(i).getString("med");
+                        temp.date = date;
+                        temp.time = String.format("%02d", Controls.getJSONObject(i).getInt("Hora")) + ":" + String.format("%02d", Controls.getJSONObject(i).getInt("Minuto"));
+                        if (date.equals(DateNow)) {
+                            if (Controls.getJSONObject(i).getInt("Hora") >= myDate.get(Calendar.HOUR_OF_DAY)) {
+                                if (Controls.getJSONObject(i).getInt("Hora") > myDate.get(Calendar.HOUR_OF_DAY)) {
                                     Data.add(temp);
+                                } else {
+                                    if (Controls.getJSONObject(i).getInt("Minuto") >= myDate.get(Calendar.MINUTE)) {
+                                        Data.add(temp);
+                                    }
                                 }
                             }
+                        } else {
+                            Data.add(temp);
                         }
-                    }
-                    else {
-                        Data.add(temp);
                     }
                 }
             }
         } catch (Exception e) {
             Log.i("milog", e.getMessage());
+            GenConf.ShowMessageBox("Error al cargar la lista de tomas",this);
         }
         return Data;
     }
